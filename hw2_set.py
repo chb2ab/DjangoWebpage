@@ -2,12 +2,11 @@ __author__ = 'Naveen'
 
 class OurSet:
     """OurSet is a class that has one field (a list) and several methods
-    that act upon this list. OurSet essentially turns the native list into
-    a set, which cannot contain duplicates of items. Additionally, OurSet implements
+    that act upon this list. OurSet essentially turns the native list, which cannot contain duplicates of items. Additionally, OurSet implements
     two common set operations, union and intersection"""
 
     """this is the field of "data" that is a list"""
-    data = []
+    
 
     def __init__(self):
         """initializer for the OurSet object"""
