@@ -1,1 +1,1 @@
-web: gunicorn cs3240-f15-team14.wsgi --log-file -
+web: gunicorn myapplication.wsgi --log-file -
