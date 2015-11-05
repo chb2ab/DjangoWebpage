@@ -11,4 +11,4 @@ class DocumentForm(forms.Form):
 class reportEditForm(forms.ModelForm):
     class Meta:
         model = Report
-        fields = '__all__'
+        

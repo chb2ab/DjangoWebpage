@@ -1,4 +1,5 @@
 from django.contrib import admin
-from myproject.myapp.models import Document 
+from uploader.models import Document, Report
 admin.site.register(Document)
+admin.site.register(Report)
 # Register your models here.

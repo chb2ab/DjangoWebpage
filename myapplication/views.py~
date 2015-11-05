@@ -7,3 +7,6 @@ from django.http import HttpResponse
 
 def index(request):
     return render(request,'test.html')
+
+def process(request):
+    return render(request,'process.html')

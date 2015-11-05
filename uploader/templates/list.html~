@@ -37,7 +37,7 @@
 			<p>No reports.</p>
 		{% endif %}
 
-		Upload File: <br />
+		Upload a File: <br />
 		<!-- Upload form. Note enctype attribute! -->
 		<form action="{% url "list" %}" method="post" enctype="multipart/form-data">
 			{% csrf_token %}
