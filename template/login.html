@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/0.7.15/webcomponents-lite.min.js"></script>
+  <link rel="import" href="bower_components/paper-input/paper-input.html">
+  <link rel="import" href="elements.html" />
+  <style>
+    form {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin-left: -110px;
+      margin-top: -110px;
+      background-color: rgba(255, 255, 255, 0.6);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    paper-input {
+      width: 200px;
+    }
+    p {
+      color: red;
+      visibility: hidden;
+    }
+    body {
+      background-color: #90CAF9;
+    }
+  </style>
+</head>
+<body>
+  <div style="height:100%; overflow:hidden;">
+    <div class="text-center" style="margin-top:30px;">
+      <h2>CS3240_f15_team14 Project</h2>
+    </div>
+    <form action="demo_form.asp">
+      <paper-input label="ID" id="ID"></paper-input>
+      <paper-input label="Password" type="Password" id="password"></paper-input>
+      <div class="text-center" style="margin-top:30px;">
+        <paper-button raised class="noButton">Register</paper-button>
+        <paper-button raised class="yesButton">Login</paper-button>
+      </div>
+    </form>
+  </div>
+
+</body>
+</html>
