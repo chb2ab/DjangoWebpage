@@ -37,6 +37,3 @@ def login(request):
             
     else:
     	return render(request,'fail.html')
-
-
-
