@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+div {
+    height: 200px;
+    width: 400px;
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -200px;
+}
+</style>
+</head>
+<body>
+<div>
+<<<<<<< HEAD
+<form action="demo_form.asp">
+First name: <input type="text" name="FirstName"><br>
+Last name: <input type="text" name="LastName"><br>
+<input type="submit" value="Submit">
+=======
+<form action="{% url 'django.contrib.auth.views.login' %}" method='POST'> {% csrf_token %}
+    <div >
+        <label for='username'> Username </label>
+        <input type='text' name='Username' id='username'>
+        <label for='password'>Password </label>
+        <input type='password' name='Password' id='password'>
+        <input type='submit' value='login'>
+    </div>
+>>>>>>> d1031cf17d8ad83c3abbac5a5f6e94544a780e2f
+</form>
+</div>
+</body>
+</html>

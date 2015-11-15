@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.5/darkly/bootstrap.min.css" crossorigin="anonymous">
+  </head>
+
+<body>
+
+  <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">SecureWitness</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class><a href="/mainpage">Home</a></li>
+        <li><a href="/mainpage/myReports">My Reports</a></li>
+        <li class="active"><a href="/mainpage/publicReports">Public Reports<span class="sr-only">(current)</span></a></li>
+        <li><a href="#">Messages</a><li>
+        <li><a href="#">Download our app</a><li>
+
+      </ul>
+     
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">Github link</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<div class="container">
+<h1> Public Reports </h1>
+<h4> These reports have been marked as public, and can be viewed by anyone on the site </h4>
+
+{% if reports %} 
+
+   <ul>
+     {% for report in reports %}
+     {% if report.public %}
+     <p>
+       Report Title: {{report.name}} </br>
+
+     </p>
+     {% endif %}
+     {% endfor %}
+
+</ul>
+
+{% else %}
+   <p> No public reports available. </p>
+
+{% endif %}
+<p class="bs-component">
+<a class="btn btn-info" href="/mainpage"> Go back to main page </a>
+</p>
+</div>
+</body>
+
+</html>
