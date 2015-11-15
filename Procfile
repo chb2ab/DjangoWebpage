@@ -1,0 +1,1 @@
+web: gunicorn cs3240_f15_team14.wsgi --log-file -

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Minimal Django File Upload Example</title>	
+	</head>
+
+	<body>
+		<!-- List of uploaded documents -->
+		{% if reports %}
+			<ul>
+			{% for report in reports %}
+				<p>
+				Report Title: {{ report.name }} </br >
+				<form action="{% url "editreport" %}" method="post" enctype="multipart/form-data" style="display: inline;">
+				{% csrf_token %}
+				<input type="hidden" name="idofreport" value="{{ report.id }}">
+				<input type="submit" value="Edit"> 
+				</form>
+				
+				<form action="{% url "deletereport" %}" method="post" enctype="multipart/form-data" style="display: inline;">
+				{% csrf_token %}
+				<input type="hidden" name="idofreport" value="{{ report.id }}">
+				<input type="submit" value="Delete"> 
+				</form>
+				</br>
+				Folder: {{ report.folder }} </br >
+				Date created: {{ report.timestamp }} </br >
+				Short Description: {{ report.sd }} </br >
+				Documents </br >
+				{% for document in report.document_set.all %}
+					<li><a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a></li>
+				{% endfor %}
+				</br >
+				</p>
+			{% endfor %}
+			</ul>
+		{% else %}
+			<p>No reports.</p>
+		{% endif %}
+	</body>
+</html>
