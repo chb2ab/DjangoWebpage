@@ -9,4 +9,5 @@ urlpatterns = [
        r'^login/$',	
        'django.contrib.auth.views.login',
         name='login'  ),   
+ 	 url(r'^register/$', views.register, name='register'),
 ]
