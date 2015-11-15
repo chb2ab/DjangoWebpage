@@ -18,6 +18,7 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
 
+
 urlpatterns = [
     url(r'^mainpage/', include('mainpage.urls')),
     url(r'^myapplication/', include('myapplication.urls')),

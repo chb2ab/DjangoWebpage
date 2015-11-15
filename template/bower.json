@@ -1,0 +1,24 @@
+{
+  "name": "Template",
+  "homepage": "https://github.com/hojunida/cs3240-f15-team14",
+  "authors": [
+    "ahy9ng <ahy9ng@virginia.edu>"
+  ],
+  "description": "template htmls",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.2.0",
+    "iron-a11y-keys": "PolymerElements/iron-a11y-keys#^1.0.0",
+    "iron-ajax": "PolymerElements/iron-ajax#^1.0.0",
+    "paper-button": "PolymerElements/paper-button#^1.0.0"
+  }
+}

@@ -4,5 +4,13 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^$', views.process, name='process'),
+<<<<<<< HEAD
+=======
+    url(r'^success/$', views.success, name='success'),
+ 	 url(
+       r'^login/$',	
+       'django.contrib.auth.views.login',
+        name='login'  ),   
+ 	 url(r'^register/$', views.register, name='register'),
+>>>>>>> d1031cf17d8ad83c3abbac5a5f6e94544a780e2f
 ]

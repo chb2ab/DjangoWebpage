@@ -17,10 +17,21 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
+<<<<<<< HEAD
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
+    url(r'^mainpage/', include('mainpage.urls')),
     url(r'^myapplication/', include('myapplication.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^uploader/',include('uploader.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+=======
+from django.conf.urls.static import static
+from django.conf import settings
+
+urlpatterns = [
+	url(r'^myapplication/', include('myapplication.urls')),  
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^uploader/',include('uploader.urls')),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+>>>>>>> d1031cf17d8ad83c3abbac5a5f6e94544a780e2f
