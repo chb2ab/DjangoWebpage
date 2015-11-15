@@ -20,5 +20,10 @@ from django.conf import settings
 
 urlpatterns = [
 	url(r'^myapplication/', include('myapplication.urls')),
+    #    url(r'^$', myapplication.views.index, name='index'),
+ 	# url(
+     #  r'^myapplication/login/$',
+     #  'django.contrib.auth.views.login',
+     #  name='login'  ),   
     url(r'^admin/', include(admin.site.urls)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

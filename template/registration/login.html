@@ -18,11 +18,13 @@ div {
 <div>
 <form action="{% url 'django.contrib.auth.views.login' %}" method='POST'> {% csrf_token %}
     <div >
-        <label for='username'> Username </label>
-        <input type='text' name='Username' id='username'>
-        <label for='password'>Password </label>
-        <input type='password' name='Password' id='password'>
-        <input type='submit' value='login'>
+        {{form.username.label_tag}}
+        {{form.username}}
+
+        {{form.password.label_tag}}
+        {{form.password}}
+        <input type='submit' value='login' />
+        <input type='hidden' name = 'next' value="{% url 'success' %}"/>
     </div>
 </form>
 </div>

@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'myapplication',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -77,8 +78,12 @@ WSGI_APPLICATION = 'cs3240_f15_team14.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'mydatabase',
+        'USER': 'mydatabaseuser',
+        'PASSWORD': 'mypassword',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
@@ -104,7 +109,7 @@ STATIC_URL = '/static/'
 
 # Parse database configuration from $DATABASE_URL
 import dj_database_url
-DATABASES['default'] =  dj_database_url.config()
+DATABASES['default'] =  dj_database_url.config(default='postgres://hvcaoxvgdsxzui:ZnOM8mecGoc3sNJZuI3rGoGwrU@ec2-107-21-222-62.compute-1.amazonaws.com:5432/d13c60av8agdom')
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
