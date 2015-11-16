@@ -75,14 +75,17 @@
 			<a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a>
 			</form>
 <<<<<<< HEAD
+
 			</br > <br />
+
 =======
+>>>>>>> 8f8008c1fc4ccbe176e6ab8029eaaab6a003ecd9
 			{% if document.encrypted %}
 				Encrypted
 			{% else %}
 			{% endif %}
 			</br >
->>>>>>> 8f8008c1fc4ccbe176e6ab8029eaaab6a003ecd9
+
 		{% endfor %}
 			</br > <br />
 			</br > <br />
