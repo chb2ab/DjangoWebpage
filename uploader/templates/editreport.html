@@ -29,6 +29,10 @@
 			<input type="submit" value="Delete">
 			<a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a>
 			</form>
+			{% if document.encrypted %}
+				Encrypted
+			{% else %}
+			{% endif %}
 			</br >
 		{% endfor %}
 			</br >
@@ -43,6 +47,7 @@
 				{{ uploadform.docfile.errors }}
 				{{ uploadform.docfile }}
 			</p>
+			<input type="checkbox" name="encrypt"> Encrypt<br>
 			<p><input type="submit" value="Upload" /></p>
 		</form>
 	</body>
