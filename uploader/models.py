@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from django.conf import settings
+import django
 
 class Folder(models.Model):
 	name = models.CharField(max_length=100)
@@ -9,6 +11,7 @@ class Folder(models.Model):
 class Report(models.Model):
 	timestamp = models.DateTimeField(auto_now_add=True)
 	name = models.CharField(max_length=100)
+	user = models.CharField(max_length=100)
 	sd = models.CharField(max_length=200)
 	ld = models.CharField(max_length=1000)
 	public = models.BooleanField(default=False)

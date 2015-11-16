@@ -4,6 +4,7 @@ from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
 import pdb;
 
 from uploader.models import Document, Report
@@ -34,11 +35,32 @@ def publicList(request):
 		context_instance=RequestContext(request)
 	)
 
+def addreport(request):
+
+	#id = request.POST.get("idofreport", None);
+	#instance = get_object_or_404(Report, id=id)
+	#documents = instance.document_set.all()
+
+	body = Report(user=request.user)
+	form = reportEditForm(request.POST, instance=body)
+	if form.is_valid():
+		form.save()
+		return HttpResponseRedirect('/mainpage/myReports')
+	
+	else:
+		form = reportEditForm(instance=body)
+		return render_to_response(
+		'addreport.html',
+		{'form': form},
+		context_instance=RequestContext(request)
+		)
+
+
 def deletereport(request):
 	id = request.POST.get("idofreport", None);
 	Report.objects.get(pk=id).delete()
 	
-	return HttpResponseRedirect(reverse('uploader.views.list'))
+	return HttpResponseRedirect('/mainpage/myReports')
 	
 def editreport(request):
 	id = request.POST.get("idofreport", None);
@@ -47,7 +69,7 @@ def editreport(request):
 	form = reportEditForm(request.POST or None, instance=instance)
 	if form.is_valid():
 		form.save()
-		return HttpResponseRedirect(reverse('uploader.views.list'))
+		return HttpResponseRedirect('/mainpage/myReports')
 		
 	form = reportEditForm(instance=instance)
 	uploadform = DocumentForm()

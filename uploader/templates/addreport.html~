@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Edit</title>	
+	</head>
+
+	<body>
+		<!-- Upload form. Note enctype attribute! -->
+		<form action="{% url "addreport" %}" method="post">
+			{% csrf_token %}
+			<input type="hidden" name="idofreport" value="{{ idofreport }}">
+			Edit Form: <br />
+			<p>
+				User (required): {{user.username}} <br />
+				Name (required): {{ form.name }} <br />
+				Folder: {{ form.folder }} <br />
+				Short Description (required): {{ form.sd }} <br />
+				Long Description (required): {{ form.ld }} <br />
+				Public: {{ form.public }} <br />
+			</p>
+			<p><input type="submit" value="Update" /></p>
+		</form>
+		
+	</body>
+
+</html> 
