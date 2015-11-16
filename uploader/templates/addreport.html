@@ -10,7 +10,7 @@
 	</head>
 
 	<body>
-		<nav class="navbar navbar-default">
+	<nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -38,73 +38,47 @@
     </div>
   </div>
 </nav>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<!-- Upload form. Note enctype attribute! -->
-
-		<div class="container">
+	<div>
+	</div>
+	<div class="container">
 		<div class="row">
 			<div class="col-lg-8">
 				<div class="bs-component">
 					<div class="panel panel-success">
 						<div class="panel-heading">
-							Edit Report
+							New Report
 						</div>
 		<div class="panel-body">
-		<form action="{% url "editreport" %}" method="post">
+		<form action="{% url "addreport" %}" method="post">
 			{% csrf_token %}
 			<input type="hidden" name="idofreport" value="{{ idofreport }}">
-			Edit Form: <br />
+			
+			<br />
 			<p>
-				Name (required): {{ form.name }} <br /> <br />
-				Folder: {{ form.folder }} <br /> <br />
-				Short Description (required): {{ form.sd }} <br /> <br />
-				Long Description (required): {{ form.ld }} <br /> <br />
-				Public: {{ form.public }} <br /> <br />
+				Name (required): {{ form.name }} <br />
+				<br />
+				Folder: {{ form.folder }} <br />
+				<br />
+
+				Short Description (required): {{ form.sd }} <br />
+				<br />
+				Long Description (required): {{ form.ld }} <br />
+				<br />
+				Public: {{ form.public }} <br />
 			</p>
-			<p><input type="submit" value="Update" /></p>
+			<p><input type="submit" value="Add" /></p>
 		</form>
-		Documents: </br > <br />
-		{% for document in documents %}
-			<form action="{% url "deletedocument" %}" method="post" enctype="multipart/form-data" style="display: inline;">
-			{% csrf_token %}
-			<input type="hidden" name="idofreport" value="{{ idofreport }}">
-			<input type="hidden" name="idofdoc" value="{{ document.id }}">
-			<input type="submit" value="Delete">
-			<a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a>
-			</form>
-<<<<<<< HEAD
-			</br > <br />
-=======
-			{% if document.encrypted %}
-				Encrypted
-			{% else %}
-			{% endif %}
-			</br >
->>>>>>> 8f8008c1fc4ccbe176e6ab8029eaaab6a003ecd9
-		{% endfor %}
-			</br > <br />
-			</br > <br />
-		Upload File: <br /> <br />
-		<!-- Upload form. Note enctype attribute! -->
-		<form action="{% url "uploaddocument" %}" method="post" enctype="multipart/form-data">
-			{% csrf_token %}
-			<input type="hidden" name="idofreport" value="{{ idofreport }}">
-			<p>{{ uploadform.non_field_errors }}</p>
-			<p>
-				{{ uploadform.docfile.errors }}  <br />
-				{{ uploadform.docfile }} <br />
-			</p>
-			<input type="checkbox" name="encrypt"> Encrypt<br>
-			<p><input type="submit" value="Upload" /></p>
-		</form>
+		</div>
 	</div>
 </div>
 </div>
 </div>
 </div>
-</div>
+
 	</body>
 
 </html> 

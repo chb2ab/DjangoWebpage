@@ -48,14 +48,35 @@
 
 {% if reports %} 
 
-   <ul>
+  <ul>
      {% for report in reports %}
      {% if report.public %}
-     <p>
-       Report Title: {{report.name}} </br>
+     <div class="row">
+      <div class="col-lg-8">
+        <div class="bs-component">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4>{{report.name}} </h4>
+            </div>
+            Date created: {{ report.timestamp }} </br> </br>
 
-     </p>
-     {% endif %}
+            Short Description: {{ report.sd }} </br> </br>
+
+            Longer Description: {{ report.ld }} </br> </br>
+
+            Documents </br>
+            {% for document in report.document_set.all %}
+              <ul> <a href="{{ document.docfile.url }}"> {{ document.docfile.name }} </a> </ul>
+            {% endfor %}
+        </br>
+
+     
+     
+   </div>
+ </div>
+</div>
+</div>
+{% endif %}
      {% endfor %}
 
 </ul>

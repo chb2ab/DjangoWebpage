@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response
 
 # Create your views here.
 from django.http import HttpResponse
-
+from django.http import HttpResponseRedirect
 
 
 from django.contrib.auth import authenticate, login
@@ -15,7 +15,7 @@ def index(request):
 
 
 def success(request):
-	return render(request,'registration/success.html')
+	return render(request,'mainpage.html')
 
 
 from myapplication.forms import UserForm
@@ -44,7 +44,7 @@ def register(request):
             # Once hashed, we can update the user object.
             user.set_password(user.password)
             user.save()
-
+            return HttpResponseRedirect('/myapplication/')
             # Update our variable to tell the template registration was successful.
             registered = True
 

@@ -2,25 +2,70 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Edit</title>	
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+    	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+   	 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.5/darkly/bootstrap.min.css" crossorigin="anonymous">
 	</head>
 
 	<body>
+		<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">SecureWitness</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="/mainpage">Home</a></li>
+        <li><a href="/mainpage/myReports">My Reports</a></li>
+        <li><a href="/mainpage/publicReports">Public Reports</a></li>
+        <li><a href="#">Messages</a><li>
+        <li><a href="#">Download our app</a><li>
+
+      </ul>
+     
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">Github link</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<!-- Upload form. Note enctype attribute! -->
+
+		<div class="container">
+		<div class="row">
+			<div class="col-lg-8">
+				<div class="bs-component">
+					<div class="panel panel-success">
+						<div class="panel-heading">
+							Edit Report
+						</div>
+		<div class="panel-body">
 		<form action="{% url "editreport" %}" method="post">
 			{% csrf_token %}
 			<input type="hidden" name="idofreport" value="{{ idofreport }}">
 			Edit Form: <br />
 			<p>
-				Name (required): {{ form.name }} <br />
-				Folder: {{ form.folder }} <br />
-				Short Description (required): {{ form.sd }} <br />
-				Long Description (required): {{ form.ld }} <br />
-				Public: {{ form.public }} <br />
+				Name (required): {{ form.name }} <br /> <br />
+				Folder: {{ form.folder }} <br /> <br />
+				Short Description (required): {{ form.sd }} <br /> <br />
+				Long Description (required): {{ form.ld }} <br /> <br />
+				Public: {{ form.public }} <br /> <br />
 			</p>
 			<p><input type="submit" value="Update" /></p>
 		</form>
-		Documents: </br >
+		Documents: </br > <br />
 		{% for document in documents %}
 			<form action="{% url "deletedocument" %}" method="post" enctype="multipart/form-data" style="display: inline;">
 			{% csrf_token %}
@@ -29,22 +74,37 @@
 			<input type="submit" value="Delete">
 			<a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a>
 			</form>
+
+			</br > <br />
+
+			{% if document.encrypted %}
+				Encrypted
+			{% else %}
+			{% endif %}
 			</br >
+
 		{% endfor %}
-			</br >
-			</br >
-		Upload File: <br />
+			</br > <br />
+			</br > <br />
+		Upload File: <br /> <br />
 		<!-- Upload form. Note enctype attribute! -->
 		<form action="{% url "uploaddocument" %}" method="post" enctype="multipart/form-data">
 			{% csrf_token %}
 			<input type="hidden" name="idofreport" value="{{ idofreport }}">
 			<p>{{ uploadform.non_field_errors }}</p>
 			<p>
-				{{ uploadform.docfile.errors }}
-				{{ uploadform.docfile }}
+				{{ uploadform.docfile.errors }}  <br />
+				{{ uploadform.docfile }} <br />
 			</p>
+			<input type="checkbox" name="encrypt"> Encrypt<br>
 			<p><input type="submit" value="Upload" /></p>
 		</form>
+	</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 	</body>
 
 </html> 

@@ -5,10 +5,7 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse
 
 
-<<<<<<< HEAD
-def index(request):
-    return render(request,'test.html')
-=======
+
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
@@ -67,4 +64,4 @@ def register(request):
             'register.html',
             {'user_form': user_form, 'registered': registered},
             context)
->>>>>>> d1031cf17d8ad83c3abbac5a5f6e94544a780e2f
+      

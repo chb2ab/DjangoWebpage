@@ -24,7 +24,7 @@
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class><a href="/mainpage">Home</a></li>
+        <li><a href="/mainpage">Home</a></li>
         <li class="active"><a href="/mainpage/myReports">My Reports<span class="sr-only">(current)</span></a></li>
         <li><a href="/mainpage/publicReports">Public Reports</a></li>
         <li><a href="#">Messages</a><li>
@@ -45,29 +45,46 @@
 <h1> My reports </h1>
 <h4> Any report created can be deleted at any time. </h4>
 
+
+<p> 
+    <form action="{% url "addreport" %}" method="post"
+    enctype="multipart/form-data" style="display: inline;">
+    {% csrf_token %}
+    <input type="hidden" name="newreportid">
+
+    <input class="btn btn-success btn-lg" type="submit" value="Create a report">
+
+      </form>
+      </p>
 {% if reports %} 
+  
 
    <ul>
      {% for report in reports %}
+     {% if user.username = report.user %}
      <div class="row">
       <div class="col-lg-8">
         <div class="bs-component">
           <div class="panel panel-primary">
            <div class="panel-heading"> 
         Report Title: {{ report.name }} 
-      </div>
-      <div class="panel-body">
+        &nbsp;
+        &nbsp;
         <form class="form-horizontal" action="{% url "editreport" %}" method="post" enctype="multipart/form-data" style="display: inline;">
         {% csrf_token %}
         <input type="hidden" name="idofreport" value="{{ report.id }}">
-        <input type="submit" value="Edit"> 
+        <input class="btn btn-warning btn-sm" type="submit" value="Edit"> 
         </form>
-        
+        &nbsp;
+        &nbsp;
         <form action="{% url "deletereport" %}" method="post" enctype="multipart/form-data" style="display: inline;">
         {% csrf_token %}
         <input type="hidden" name="idofreport" value="{{ report.id }}">
-        <input type="submit" value="Delete"> 
+        <input class="btn btn-danger btn-sm" type="submit" value="Delete"> 
         </form>
+      </div>
+      <div class="panel-body">
+        
         </br>
         Folder: {{ report.folder }} </br >
         Date created: {{ report.timestamp }} </br >
@@ -75,14 +92,16 @@
         Documents </br >
         {% for document in report.document_set.all %}
           <ul><a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a></ul>
+
         {% endfor %}
+
         </br >
       </div>
     </div>
   </div>
 </div>
 </div>
-
+{% endif %}
         
      {% endfor %}
 
