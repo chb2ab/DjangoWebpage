@@ -92,7 +92,7 @@ def uploaddocument(request):
 	instance = get_object_or_404(Report, id=repid)
 	
 	if form.is_valid():
-		newdoc = Document(docfile = request.FILES['docfile'], report=instance)
+		newdoc = Document(docfile = request.FILES['docfile'], report=instance, encrypted = request.POST.get('encrypt', False))
 		newdoc.save()
 	
 	return editreport(request)

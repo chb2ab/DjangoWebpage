@@ -49,7 +49,12 @@
 				Short Description: {{ report.sd }} </br >
 				Documents </br >
 				{% for document in report.document_set.all %}
-					<li><a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a></li>
+					<li><a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a>
+					{% if document.encrypted %}
+						Encrypted
+					{% else %}
+					{% endif %}
+					</li>
 				{% endfor %}
 				</br >
 				</p>
