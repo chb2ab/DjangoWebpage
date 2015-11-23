@@ -13,11 +13,6 @@ from django.contrib.auth.forms import AuthenticationForm
 def index(request):
     return render(request,'index.html');
 
-
-def success(request):
-	return render(request,'mainpage.html')
-
-
 from myapplication.forms import UserForm
 from django.template import RequestContext
 
