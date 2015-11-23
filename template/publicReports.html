@@ -46,8 +46,28 @@
 <h1> Public Reports </h1>
 <h4> These reports have been marked as public, and can be viewed by anyone on the site </h4>
 
+<p>
+<form action="{% url "publicReports" %}" method="get">
+  {% csrf_token %}
+  <input type="text" name="q">
+  <input type="submit" value="Search" /> <br />
+  Search by: <br />
+  <input type="checkbox" name="namecb"> Name <br />
+  <input type="checkbox" name="sdcb"> Short Description <br />
+  <input type="checkbox" name="ldcb"> Long Description <br />
+  <input type="checkbox" name="usercb"> User <br />
+  Sort by: <br />
+  <input type="radio" name="sortselect" value="namerb"> Name <br />
+  <input type="radio" name="sortselect" value="userrb"> User <br />
+  <input type="radio" name="sortselect" value="daterb"> Date <br />
+</form>
+</p>
+{% if query %}
+<p>
+	Search results for {{ query }}:
+</p>
+{% endif %}
 {% if reports %} 
-
   <ul>
      {% for report in reports %}
      {% if report.public %}
