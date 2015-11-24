@@ -59,7 +59,6 @@
     <form action="{% url "addfolder" %}" method="post"
     enctype="multipart/form-data" style="display: inline;">
     {% csrf_token %}
-    <input type="hidden" name="newreportid">
 
     <input class="btn btn-success btn-lg" type="submit" value="Create a folder">
 
@@ -118,6 +117,40 @@
 
 {% else %}
    <p> No public reports available. </p>
+
+{% endif %}
+
+{% if folders %} 
+  
+
+   <ul>
+     {% for folder in folders %}
+     {% if user.username = folder.user %}
+     <div class="row">
+      <div class="col-lg-8">
+        <div class="bs-component">
+          <div class="panel panel-primary">
+           <div class="panel-heading"> 
+        Folder Name: {{ folder.name }} 
+        &nbsp;
+        &nbsp;
+        <form action="{% url "deletefolder" %}" method="post" enctype="multipart/form-data" style="display: inline;">
+        {% csrf_token %}
+        <input type="hidden" name="idoffolder" value="{{ folder.id }}">
+        <input class="btn btn-danger btn-sm" type="submit" value="Delete"> 
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>  
+     {% endif %}
+     {% endfor %}
+
+</ul>
+
+{% else %}
+   <p> No folders created. </p>
 
 {% endif %}
 <p class="bs-component">

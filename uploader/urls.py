@@ -9,4 +9,5 @@ urlpatterns = patterns('uploader.views',
     url(r'^uploaddocument/$', 'uploaddocument', name='uploaddocument'),
     url(r'^addreport/$', 'addreport', name='addreport'),
     url(r'^addfolder/$', 'addfolder', name='addfolder'),
+    url(r'^deletefolder/$', 'deletefolder', name='deletefolder'),
 )

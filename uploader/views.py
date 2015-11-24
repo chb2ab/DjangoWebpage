@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 import pdb;
 
-from uploader.models import Document, Report
+from uploader.models import Document, Report, Folder
 from uploader.forms import DocumentForm, reportEditForm, folderEditForm
 
 @login_required(login_url='login')
@@ -53,6 +53,7 @@ def addreport(request):
 	
 	else:
 		form = reportEditForm(instance=body)
+		form.fields['folder'].queryset = Folder.objects.filter(user=request.user)
 		return render_to_response(
 		'addreport.html',
 		{'form': form},
@@ -63,6 +64,14 @@ def addreport(request):
 def deletereport(request):
 	id = request.POST.get("idofreport", None);
 	Report.objects.get(pk=id).delete()
+	
+	return HttpResponseRedirect('/mainpage/myReports')
+
+
+@login_required(login_url='login')
+def deletefolder(request):
+	id = request.POST.get("idoffolder", None);
+	Folder.objects.get(pk=id).delete()
 	
 	return HttpResponseRedirect('/mainpage/myReports')
 
@@ -106,18 +115,13 @@ def uploaddocument(request):
 	
 @login_required(login_url='login')
 def addfolder(request):
-
-	#id = request.POST.get("idofreport", None);
-	#instance = get_object_or_404(Report, id=id)
-	#documents = instance.document_set.all()
-
-	form = folderEditForm(request.POST)
+	body = Folder(user=request.user)
+	form = folderEditForm(request.POST, instance=body)
 	if form.is_valid():
 		form.save()
 		return HttpResponseRedirect('/mainpage/myReports')
-	
 	else:
-		form = reportEditForm()
+		form = folderEditForm()
 		return render_to_response(
 		'addfolder.html',
 		{'form': form},
