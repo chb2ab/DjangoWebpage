@@ -8,5 +8,5 @@ urlpatterns = patterns('uploader.views',
     url(r'^deletedocument/$', 'deletedocument', name='deletedocument'),
     url(r'^uploaddocument/$', 'uploaddocument', name='uploaddocument'),
     url(r'^addreport/$', 'addreport', name='addreport'),
-
+    url(r'^addfolder/$', 'addfolder', name='addfolder'),
 )

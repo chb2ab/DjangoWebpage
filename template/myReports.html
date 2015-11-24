@@ -55,6 +55,15 @@
     <input class="btn btn-success btn-lg" type="submit" value="Create a report">
 
       </form>
+      
+    <form action="{% url "addfolder" %}" method="post"
+    enctype="multipart/form-data" style="display: inline;">
+    {% csrf_token %}
+    <input type="hidden" name="newreportid">
+
+    <input class="btn btn-success btn-lg" type="submit" value="Create a folder">
+
+      </form>
       </p>
 {% if reports %} 
   

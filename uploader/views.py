@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 import pdb;
 
 from uploader.models import Document, Report
-from uploader.forms import DocumentForm, reportEditForm
+from uploader.forms import DocumentForm, reportEditForm, folderEditForm
 
 @login_required(login_url='login')
 def list(request):
@@ -103,3 +103,23 @@ def uploaddocument(request):
 		newdoc.save()
 	
 	return editreport(request)
+	
+@login_required(login_url='login')
+def addfolder(request):
+
+	#id = request.POST.get("idofreport", None);
+	#instance = get_object_or_404(Report, id=id)
+	#documents = instance.document_set.all()
+
+	form = folderEditForm(request.POST)
+	if form.is_valid():
+		form.save()
+		return HttpResponseRedirect('/mainpage/myReports')
+	
+	else:
+		form = reportEditForm()
+		return render_to_response(
+		'addfolder.html',
+		{'form': form},
+		context_instance=RequestContext(request)
+		)
