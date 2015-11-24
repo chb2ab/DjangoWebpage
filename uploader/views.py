@@ -5,11 +5,13 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 import pdb;
 
 from uploader.models import Document, Report
 from uploader.forms import DocumentForm, reportEditForm
 
+@login_required(login_url='login')
 def list(request):
 	form = DocumentForm() # A empty, unbound form
 
@@ -24,6 +26,7 @@ def list(request):
 		context_instance=RequestContext(request)
 	)
 
+@login_required(login_url='login')
 def publicList(request):
 	form = DocumentForm()
 
@@ -35,6 +38,7 @@ def publicList(request):
 		context_instance=RequestContext(request)
 	)
 
+@login_required(login_url='login')
 def addreport(request):
 
 	#id = request.POST.get("idofreport", None);
@@ -55,13 +59,14 @@ def addreport(request):
 		context_instance=RequestContext(request)
 		)
 
-
+@login_required(login_url='login')
 def deletereport(request):
 	id = request.POST.get("idofreport", None);
 	Report.objects.get(pk=id).delete()
 	
 	return HttpResponseRedirect('/mainpage/myReports')
-	
+
+@login_required(login_url='login')
 def editreport(request):
 	id = request.POST.get("idofreport", None);
 	instance = get_object_or_404(Report, id=id)
@@ -79,11 +84,13 @@ def editreport(request):
 		context_instance=RequestContext(request)
 	)
 
+@login_required(login_url='login')
 def deletedocument(request):
 	docid = request.POST.get("idofdoc", None)
 	Document.objects.get(pk=docid).delete()
 	return editreport(request)
 
+@login_required(login_url='login')
 def uploaddocument(request):
 	# Handle file upload
 	form = DocumentForm(request.POST, request.FILES)

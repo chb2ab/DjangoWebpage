@@ -6,9 +6,12 @@ from django.template import RequestContext, loader
 from django.http import HttpResponse
 from uploader.models import Document, Report
 from uploader.forms import DocumentForm, reportEditForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 import pdb;
 # Create your views here.
 
+@login_required(login_url='login')
 def mainpage(request):
     form = DocumentForm()
 
@@ -21,6 +24,7 @@ def mainpage(request):
         context_instance=RequestContext(request)
         )
    
+@login_required(login_url='login')
 def publicReports(request):
     query_string = ''
     found_entries = None
@@ -75,6 +79,7 @@ def publicReports(request):
             context_instance=RequestContext(request)
             )
 
+@login_required(login_url='login')
 def myReports(request):
     form = DocumentForm()
     documents = Document.objects.all()
@@ -85,3 +90,8 @@ def myReports(request):
         {'reports': reports, 'documents': documents, 'form': form},
         context_instance=RequestContext(request)
         )
+
+@login_required(login_url='login')
+def logout_view(request):
+    logout(request);
+    return render(request, 'index.html')
