@@ -97,6 +97,7 @@
         Folder: {{ report.folder }} </br >
         Date created: {{ report.timestamp }} </br >
         Short Description: {{ report.sd }} </br >
+        Votes: {{ report.votes }} </br >
         Documents </br >
         {% for document in report.document_set.all %}
           <ul><a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a></ul>
