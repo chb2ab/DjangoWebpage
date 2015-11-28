@@ -49,3 +49,11 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
+
+*.egg-info
+*.pyc
+build
+htmlcov
+MANIFEST
+.tox
+.coverage

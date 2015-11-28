@@ -40,7 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'myapplication',
     'uploader',
-
+    'vote',
 )
 
 MIDDLEWARE_CLASSES = (

@@ -60,6 +60,7 @@
   <input type="radio" name="sortselect" value="namerb"> Name <br />
   <input type="radio" name="sortselect" value="userrb"> User <br />
   <input type="radio" name="sortselect" value="daterb"> Date <br />
+  <input type="radio" name="sortselect" value="votesb"> Likes <br />
 </form>
 </p>
 {% if query %}
@@ -84,7 +85,19 @@
 
             Longer Description: {{ report.ld }} </br> </br>
             
-            Votes: {{ report.votes }} </br > </br>
+            Likes: {{ report.votes.count }}
+            
+            <form class="form-horizontal" action="{% url "publicReports" %}" method="post" enctype="multipart/form-data" style="display: inline;">
+            {% csrf_token %}
+            {% if report in voted %}
+                <input type="hidden" name="downvote" value="{{ report.id }}">
+                <input class="btn btn-danger btn-sm" type="submit" value="Like">
+            {% else %}
+                <input type="hidden" name="upvote" value="{{ report.id }}">
+                <input class="btn btn-sm" type="submit" value="Like"> 
+            {% endif %}
+            </form>
+            </br > </br>
 
             Documents </br>
             {% for document in report.document_set.all %}
