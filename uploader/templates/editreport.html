@@ -78,16 +78,15 @@ select {
 			<input type="hidden" name="idofreport" value="{{ idofreport }}">
 			<input type="hidden" name="idofdoc" value="{{ document.id }}">
 			<input type="submit" value="Delete">
-			<a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a>
-			</form>
-
-
-			</br > <br />
 
 			{% if document.encrypted %}
-				Encrypted
+				{{ document.docfile }} (Encrypted)
 			{% else %}
+				<a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a>
 			{% endif %}
+			</form>
+			</br >
+			<br />
 			</br >
 
 		{% endfor %}

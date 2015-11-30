@@ -98,10 +98,16 @@
         Date created: {{ report.timestamp }} </br >
         Short Description: {{ report.sd }} </br >
         Likes: {{ report.votes.count }} </br >
+        Public: {{ report.public }} </br >
         Documents </br >
         {% for document in report.document_set.all %}
-          <ul><a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a></ul>
-
+        <ul>
+                {% if document.encrypted %}
+                {{ document.docfile }} (Encrypted)
+                {% else %}
+                <a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a>
+                {% endif %}
+        </ul>
         {% endfor %}
 
         </br >
