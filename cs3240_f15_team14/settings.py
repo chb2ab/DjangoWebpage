@@ -41,7 +41,7 @@ INSTALLED_APPS = (
     'myapplication',
     'uploader',
     'siteadmin',
-    
+    'postman',
 
 )
 
