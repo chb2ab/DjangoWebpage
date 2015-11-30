@@ -141,6 +141,13 @@
         Folder Name: {{ folder.name }} 
         &nbsp;
         &nbsp;
+        <form class="form-horizontal" action="{% url "editfolder" %}" method="post" enctype="multipart/form-data" style="display: inline;">
+        {% csrf_token %}
+        <input type="hidden" name="idoffolder" value="{{ folder.id }}">
+        <input class="btn btn-warning btn-sm" type="submit" value="Edit"> 
+        </form>
+        &nbsp;
+        &nbsp;
         <form action="{% url "deletefolder" %}" method="post" enctype="multipart/form-data" style="display: inline;">
         {% csrf_token %}
         <input type="hidden" name="idoffolder" value="{{ folder.id }}">

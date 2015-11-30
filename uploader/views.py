@@ -86,6 +86,7 @@ def editreport(request):
 		return HttpResponseRedirect('/mainpage/myReports')
 		
 	form = reportEditForm(instance=instance)
+	form.fields['folder'].queryset = Folder.objects.filter(user=request.user)
 	uploadform = DocumentForm()
 	return render_to_response(
 		'editreport.html',
@@ -127,3 +128,19 @@ def addfolder(request):
 		{'form': form},
 		context_instance=RequestContext(request)
 		)
+
+@login_required(login_url='login')
+def editfolder(request):
+	id = request.POST.get("idoffolder", None);
+	instance = get_object_or_404(Folder, id=id)
+	form = folderEditForm(request.POST or None, instance=instance)
+	if form.is_valid():
+		form.save()
+		return HttpResponseRedirect('/mainpage/myReports')
+		
+	form = folderEditForm(instance=instance)
+	return render_to_response(
+		'editfolder.html',
+		{'form': form, 'idoffolder': id},
+		context_instance=RequestContext(request)
+	)
