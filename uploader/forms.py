@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from uploader.models import Report, Folder
+from uploader.models import Report, Folder, Group2
+
 
 class DocumentForm(forms.Form):
     docfile = forms.FileField(
@@ -17,3 +18,8 @@ class folderEditForm(forms.ModelForm):
     class Meta:
         model = Folder
         fields = ('name',)
+
+class groupEditForm(forms.ModelForm):
+    class Meta:
+        model = Group2
+        exclude = ('creator', 'reports', 'permissions',)

@@ -1,0 +1,39 @@
+C011 000	jmp 	start 	skip around the variables
+0000 001 i 	dw 	0 	int i
+0003 002 s 	dw 	3 	int length  was once s
+0000 003 n 	dw 	0 	int maxVal
+0003 004 a[0] 	dw 	3	int[] a
+0008 005 a[1] 	dw 	8	
+0005 006 a[2] 	dw 	5
+0015 007 a[3]  	dw	15
+0006 008 a[4] 	dw	6	array values
+0034 009 a[5]	dw	34	
+0007 00A a[6] 	dw	7			
+0017 00B a[7]   dw	17
+0004 00C a[8]	dw	4
+3000 00D 	dw	adit	adit for load
+0001 00E 	dw	one	
+0000 00F 	 	
+0000 010 		
+3002 011 loop 	load 	length 	if (i >= length) goto xit
+6001 012 	sub 	i	
+B000 013 	nop 	skip	extra space
+D025 014 	jmpe 	xit	if (i >= length, break to end)
+300D 015 	load 	adit 	form the instruction to load a[i]
+5004 016 	add 	a
+5001 017 	add 	i
+401A 018 	store 	doit 	plant the instruction into the program
+B000 019 	nop	skip	extra space	 	
+0000 01A doit 	dw 	0	load a[i]
+6003 01B 	sub	maxVal	subtract maxValue from accumulator
+D021 01C 	jmpl 	021	if value is less than max value, skip ahead 	
+301A 01D 	load	01A	otherwise, change maxVal to a[i]
+401F 01E 	store 	01A	
+0000 01F doit	dw 	0	load a[i] again
+4003 020  	store 	maxVal 	set maxVal to a[i]
+3001 021 	load	i	
+500E 022 	add	i+=1	increment i by 1
+4001 023	store	i	
+C011 024	goto loop	repeat until end of array
+3003 025	load    maxVal	
+1800 026	print	accum	

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.5/flatly/bootstrap.min.css" crossorigin="anonymous">
+	</head>
+
+	<body>
+		<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">SecureWitness</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="/siteadmin">Home</a></li>
+        <li class="active"><a href="/siteadmin/users">User List<span class="sr-only">(current)</span></a></li>
+        <li><a href="/siteadmin/admins">Admins</a></li>
+        <li><a href="#">Messages</a><li>
+        <li><a href="#">Download our app</a><li>
+
+      </ul>
+     
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">Github link</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+ 
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<!-- List of uploaded documents -->
+		
+		<div class="container">
+			<h1> A synopsis on each user </h1>
+		</div>
+		{% if users %}
+			<ul>
+			{% for user in users %}
+				
+					<div class="row">
+      <div class="col-lg-8">
+        <div class="bs-component">
+          <div class="panel panel-primary">
+           <div class="panel-heading"> 
+				User name: <a href="/siteadmin/{{user.username}}">{{ user.username }} </a></br >
+				
+			</div>
+      <div class="panel-body">
+
+      		{% if reports %}
+      		Reports: </br>
+      			{% for report in reports %}
+      				{% if report.user == user.username %}
+      				{{ report.name }} </br>
+      				{% endif %}
+      			{% endfor %}
+      		{% endif %}
+
+      	</div>
+    </div>
+  </div>
+</div>
+</div>
+			{% endfor %}
+			</ul>
+		{% else %}
+			<p>No users.</p>
+		{% endif %}
+
+	</body>
+</html>

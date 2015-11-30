@@ -4,7 +4,7 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.template import RequestContext, loader
 from django.http import HttpResponse
-from uploader.models import Document, Report, Folder
+from uploader.models import Document, Report, Folder, Group2
 from uploader.forms import DocumentForm, reportEditForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -89,6 +89,15 @@ def myReports(request):
     return render_to_response(
         'myReports.html',
         {'reports': reports, 'documents': documents, 'form': form, 'folders': folders},
+        context_instance=RequestContext(request)
+        )
+
+def myGroups(request):
+    groups = Group2.objects.all()
+
+    return render_to_response(
+        'myGroups.html',
+        {'groups': groups},
         context_instance=RequestContext(request)
         )
 

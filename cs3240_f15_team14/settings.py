@@ -40,6 +40,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'myapplication',
     'uploader',
+    'siteadmin',
+    
 
 )
 
@@ -81,14 +83,8 @@ WSGI_APPLICATION = 'cs3240_f15_team14.wsgi.application'
 
 DATABASES = {
     'default': {
-
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'mydatabase',
-        'USER': 'mydatabaseuser',
-        'PASSWORD': 'mypassword',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-
     }
 }
 
@@ -113,9 +109,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Parse database configuration from $DATABASE_URL
-
-import dj_database_url
-DATABASES['default'] =  dj_database_url.config(default='postgres://fqrrqdnannsmis:ZaUeBB7LVhfLXrQrOAWfeHQmXk@ec2-107-21-219-142.compute-1.amazonaws.com:5432/d8q06ijrlprkik')
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

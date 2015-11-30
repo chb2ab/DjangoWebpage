@@ -5,11 +5,13 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 import pdb;
 
-from uploader.models import Document, Report
-from uploader.forms import DocumentForm, reportEditForm
+from uploader.models import Document, Report, Folder, Group
+from uploader.forms import DocumentForm, reportEditForm, folderEditForm, groupEditForm
 
+@login_required(login_url='login')
 def list(request):
 	form = DocumentForm() # A empty, unbound form
 
@@ -24,6 +26,7 @@ def list(request):
 		context_instance=RequestContext(request)
 	)
 
+@login_required(login_url='login')
 def publicList(request):
 	form = DocumentForm()
 
@@ -35,30 +38,44 @@ def publicList(request):
 		context_instance=RequestContext(request)
 	)
 
+@login_required(login_url='login')
 def addreport(request):
 
-	id = request.POST.get("idofreport", None);
+	#id = request.POST.get("idofreport", None);
 	#instance = get_object_or_404(Report, id=id)
 	#documents = instance.document_set.all()
-	form = reportEditForm(request.POST or None)
+
+	body = Report(user=request.user)
+	form = reportEditForm(request.POST, instance=body)
 	if form.is_valid():
 		form.save()
-		return HttpResponseRedirect(reverse('uploader.views.list'))
-
-	form = reportEditForm()
-	return render_to_response(
+		return HttpResponseRedirect('/mainpage/myReports')
+	
+	else:
+		form = reportEditForm(instance=body)
+		form.fields['folder'].queryset = Folder.objects.filter(user=request.user)
+		return render_to_response(
 		'addreport.html',
 		{'form': form},
 		context_instance=RequestContext(request)
-	)
+		)
 
-
+@login_required(login_url='login')
 def deletereport(request):
 	id = request.POST.get("idofreport", None);
 	Report.objects.get(pk=id).delete()
 	
-	return HttpResponseRedirect(reverse('uploader.views.list'))
+	return HttpResponseRedirect('/mainpage/myReports')
+
+
+@login_required(login_url='login')
+def deletefolder(request):
+	id = request.POST.get("idoffolder", None);
+	Folder.objects.get(pk=id).delete()
 	
+	return HttpResponseRedirect('/mainpage/myReports')
+
+@login_required(login_url='login')
 def editreport(request):
 	id = request.POST.get("idofreport", None);
 	instance = get_object_or_404(Report, id=id)
@@ -66,21 +83,23 @@ def editreport(request):
 	form = reportEditForm(request.POST or None, instance=instance)
 	if form.is_valid():
 		form.save()
-		return HttpResponseRedirect(reverse('uploader.views.list'))
+		return HttpResponseRedirect('/mainpage/myReports')
 		
 	form = reportEditForm(instance=instance)
 	uploadform = DocumentForm()
 	return render_to_response(
 		'editreport.html',
-		{'form': form, 'idofreport': id, 'documents': documents, 'uploadform': uploadform, 'user':user},
+		{'form': form, 'idofreport': id, 'documents': documents, 'uploadform': uploadform},
 		context_instance=RequestContext(request)
 	)
 
+@login_required(login_url='login')
 def deletedocument(request):
 	docid = request.POST.get("idofdoc", None)
 	Document.objects.get(pk=docid).delete()
 	return editreport(request)
 
+@login_required(login_url='login')
 def uploaddocument(request):
 	# Handle file upload
 	form = DocumentForm(request.POST, request.FILES)
@@ -89,7 +108,36 @@ def uploaddocument(request):
 	instance = get_object_or_404(Report, id=repid)
 	
 	if form.is_valid():
-		newdoc = Document(docfile = request.FILES['docfile'], report=instance)
+		newdoc = Document(docfile = request.FILES['docfile'], report=instance, encrypted = request.POST.get('encrypt', False))
 		newdoc.save()
 	
 	return editreport(request)
+	
+@login_required(login_url='login')
+def addfolder(request):
+	body = Folder(user=request.user)
+	form = folderEditForm(request.POST, instance=body)
+	if form.is_valid():
+		form.save()
+		return HttpResponseRedirect('/mainpage/myReports')
+	else:
+		form = folderEditForm()
+		return render_to_response(
+		'addfolder.html',
+		{'form': form},
+		context_instance=RequestContext(request)
+		)
+
+def addgroup(request):
+	body = Group(user=request.user)
+	form = groupEditForm(request.POST, instance=body)
+	if form.is_valid():
+		form.save()
+		return HttpResponseRedirect('/mainpage/')
+	else:
+		form = groupEditForm()
+		return render_to_response(
+		'creategroup.html',
+		{'form':form},
+		context_instance=RequestContext(request)
+		)

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import User
+
 import django
 
 class Folder(models.Model):
@@ -26,3 +28,11 @@ class Document(models.Model):
 	docfile = models.FileField(upload_to='documents/%Y/%m/%d')
 	def __str__(self):
 		return str(self.docfile);
+
+class Group2(models.Model):
+	name = models.CharField(max_length=100)
+	creator = models.CharField(max_length=100, default="")
+	permissions = models.ManyToManyField(User)
+	reports = models.ManyToManyField(Report)
+	def __str__(self):
+		return str(self.name);
