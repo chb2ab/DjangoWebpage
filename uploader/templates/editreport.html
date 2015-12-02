@@ -80,9 +80,9 @@ select {
 			<input type="submit" value="Delete">
 
 			{% if document.encrypted %}
-				{{ document.docfile }} (Encrypted)
+				{{ document.name }} (Encrypted)
 			{% else %}
-				<a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a>
+				<a href="{{ document.docfile.url }}">{{ document.name }}</a>
 			{% endif %}
 			</form>
 			</br >
@@ -92,17 +92,17 @@ select {
 		{% endfor %}
 			</br > <br />
 			</br > <br />
-		Upload File: <br /> <br />
+		<h4>Upload File:</h4> </br > 
 		<!-- Upload form. Note enctype attribute! -->
 		<form action="{% url "uploaddocument" %}" method="post" enctype="multipart/form-data">
 			{% csrf_token %}
 			<input type="hidden" name="idofreport" value="{{ idofreport }}">
-			<p>{{ uploadform.non_field_errors }}</p>
-			<p>
+			Document Name: <input type="text" name="docname"><br>
+			{{ uploadform.non_field_errors }}
 				{{ uploadform.docfile.errors }}  <br />
 				{{ uploadform.docfile }} <br />
-			</p>
-			<input type="checkbox" name="encrypt"> Encrypt<br>
+			<input type="checkbox" name="encrypt"> Encrypted<br>
+			<br>
 			<p><input type="submit" value="Upload" /></p>
 		</form>
 	</div>

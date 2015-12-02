@@ -108,8 +108,9 @@ def uploaddocument(request):
 	repid = request.POST.get("idofreport", None);
 	instance = get_object_or_404(Report, id=repid)
 	
-	if form.is_valid():
-		newdoc = Document(docfile = request.FILES['docfile'], report=instance, encrypted = request.POST.get('encrypt', False))
+	if ( form.is_valid() and request.POST.get('docname', False) != "" ):
+		print("valid")
+		newdoc = Document(docfile = request.FILES['docfile'], report=instance, encrypted = request.POST.get('encrypt', False), name = request.POST.get('docname', False))
 		newdoc.save()
 	
 	return editreport(request)

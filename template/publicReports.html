@@ -103,9 +103,9 @@
             {% for document in report.document_set.all %}
             <ul>
                 {% if document.encrypted %}
-                {{ document.docfile }} (Encrypted)
+                {{ document.name }} (Encrypted)
                 {% else %}
-                <a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a>
+                <a href="{{ document.docfile.url }}">{{ document.name }}</a>
                 {% endif %}
             </ul>
             {% endfor %}
