@@ -59,4 +59,7 @@ def register(request):
             'register.html',
             {'user_form': user_form, 'registered': registered},
             context)
-      
+
+
+def validate(request):
+    return render(request,'validate.html');
