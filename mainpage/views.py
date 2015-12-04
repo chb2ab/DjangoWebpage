@@ -8,6 +8,7 @@ from uploader.models import Document, Report, Folder
 from uploader.forms import DocumentForm, reportEditForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
 import pdb;
 # Create your views here.
 
@@ -114,5 +115,25 @@ def myReports(request):
 
 @login_required(login_url='login')
 def logout_view(request):
+	logout(request);
+	return render(request, 'index.html')
+
+@login_required(login_url='login')
+def delete_view(request):
+	reports = Report.objects.all()
+	folders = Folder.objects.all()
+	
+	query = get_query(request.user.username, ['user'])
+	
+	reports_to_delete = reports.filter(query)
+	folders_to_delete = folders.filter(query)
+	
+	for report in reports_to_delete:
+		report.delete()
+	for folder in folders_to_delete:
+		folder.delete()
+		
+	request.user.delete()
+	
 	logout(request);
 	return render(request, 'index.html')
