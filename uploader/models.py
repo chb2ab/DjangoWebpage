@@ -17,6 +17,8 @@ class Report(models.Model):
 	user = models.CharField(max_length=100)
 	sd = models.CharField(max_length=200)
 	ld = models.CharField(max_length=1000)
+	lat = models.FloatField(default=0)
+	lon = models.FloatField(default=0)
 	public = models.BooleanField(default=False)
 	folder = models.ForeignKey(Folder, null=True)
 	def __str__(self):

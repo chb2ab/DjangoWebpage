@@ -18,6 +18,7 @@
 		
 			</p>
 
+	{% if request.user.is_staff %}
 
 		{% if users %}
 			<ul>
@@ -31,5 +32,9 @@
 		{% else %}
 			<p>No users.</p>
 		{% endif %}
+	{% else %}
+		You do not have access to this page!
+
+	{% endif %}
 	</body>
 </html>

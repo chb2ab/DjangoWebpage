@@ -46,7 +46,7 @@
 <h1> My reports </h1>
 <h4> Any report created can be deleted at any time. </h4>
 
-
+{% if request.user.is_active %}
 <p> 
     <form action="{% url "addreport" %}" method="post"
     enctype="multipart/form-data" style="display: inline;">
@@ -65,6 +65,7 @@
 
       </form>
       </p>
+      {% endif %}
 {% if reports %} 
   
 
@@ -79,11 +80,13 @@
         Report Title: {{ report.name }} 
         &nbsp;
         &nbsp;
+        {% if not request.user.is_active %}
         <form class="form-horizontal" action="{% url "editreport" %}" method="post" enctype="multipart/form-data" style="display: inline;">
         {% csrf_token %}
         <input type="hidden" name="idofreport" value="{{ report.id }}">
         <input class="btn btn-warning btn-sm" type="submit" value="Edit"> 
         </form>
+        {% endif %}
         &nbsp;
         &nbsp;
         <form action="{% url "deletereport" %}" method="post" enctype="multipart/form-data" style="display: inline;">
@@ -117,7 +120,7 @@
 </ul>
 
 {% else %}
-   <p> No public reports available. </p>
+   <p> No reports available. </p>
 
 {% endif %}
 

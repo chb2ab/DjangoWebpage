@@ -27,7 +27,8 @@
         <li><a href="/siteadmin">Home</a></li>
         <li class="active"><a href="/siteadmin/users">User List<span class="sr-only">(current)</span></a></li>
         <li><a href="/siteadmin/admins">Admins</a></li>
-        <li><a href="#">Messages</a><li>
+        <li><a href="/siteadmin/groups">Groups</a><li>
+
         <li><a href="#">Download our app</a><li>
 
       </ul>
@@ -48,35 +49,35 @@
 			<h1> A synopsis on each user </h1>
 		</div>
 		{% if users %}
-			<ul>
+
+        <div class="container">
+          <div class="row">
 			{% for user in users %}
 				
-					<div class="row">
-      <div class="col-lg-8">
-        <div class="bs-component">
-          <div class="panel panel-primary">
-           <div class="panel-heading"> 
-				User name: <a href="/siteadmin/{{user.username}}">{{ user.username }} </a></br >
-				
-			</div>
-      <div class="panel-body">
+      <div class="col-lg-4">
+        <div class="well">
+				<h3> {{user.username}} </h3>
 
-      		{% if reports %}
-      		Reports: </br>
-      			{% for report in reports %}
-      				{% if report.user == user.username %}
-      				{{ report.name }} </br>
-      				{% endif %}
-      			{% endfor %}
-      		{% endif %}
+ 
+          {% if reports %}
+          Reports: </br>
+            {% for report in reports %}
+              {% if report.user == user.username %}
+              {{ report.name }} </br>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
 
+         <a class="btn btn-info btn-lg" href="/siteadmin/{{user.username}}">Visit page </a></br >
+
+        </div>
       	</div>
-    </div>
-  </div>
-</div>
-</div>
+    
+
 			{% endfor %}
-			</ul>
+      </div>
+  </div>
+			
 		{% else %}
 			<p>No users.</p>
 		{% endif %}

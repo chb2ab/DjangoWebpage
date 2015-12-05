@@ -74,7 +74,25 @@ def admins(request):
 		{'users':users, 'admins': admins}
 		)
 
+def groups(request):
+	groups = Group2.objects.all()
+	return render_to_response(
+        'groups.html',
+        {'groups': groups},
+        context_instance=RequestContext(request)
+        )
 
+def newadmin(request, user_name):
+	users = User.objects.all()
+	user_name_added = user_name
+	groups = Group2.objects.all()
+	for user in users:
+		if user.username == user_name:
+			user.is_staff = True
+			user.save()
+	return render(request, 'siteadmin/admins.html',
+		{'groups':groups, 'users':users}
+		)
 
 
 

@@ -51,7 +51,7 @@
       {% csrf_token %}
       <input type="hidden" name="idofreport" value="{{ idofreport }}">
       
-      <p><input type="submit" value="Unsuspend user" /></p>
+      <p><input class="btn btn-success btn-lg" type="submit" value="Unsuspend user" /></p>
     </form>
 
     {% else %}
@@ -59,7 +59,7 @@
       {% csrf_token %}
       <input type="hidden" name="idofreport" value="{{ idofreport }}">
       
-      <p><input type="submit" value="Suspend user" /></p>
+      <p><input class="btn btn-warning btn-lg" type="submit" value="Suspend user" /></p>
     </form>
 
     {% endif %}
@@ -74,13 +74,6 @@
           <div class="panel panel-primary">
            <div class="panel-heading"> 
         Report Title: {{ report.name }} 
-        &nbsp;
-        &nbsp;
-        <form class="form-horizontal" action="{% url "editreport" %}" method="post" enctype="multipart/form-data" style="display: inline;">
-        {% csrf_token %}
-        <input type="hidden" name="idofreport" value="{{ report.id }}">
-        <input class="btn btn-warning btn-sm" type="submit" value="Edit"> 
-        </form>
         &nbsp;
         &nbsp;
         <form action="{% url "deletereport" %}" method="post" enctype="multipart/form-data" style="display: inline;">

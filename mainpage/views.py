@@ -8,6 +8,8 @@ from uploader.models import Document, Report, Folder, Group2
 from uploader.forms import DocumentForm, reportEditForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
+
 import pdb;
 # Create your views here.
 
@@ -91,6 +93,27 @@ def myReports(request):
         {'reports': reports, 'documents': documents, 'form': form, 'folders': folders},
         context_instance=RequestContext(request)
         )
+
+@login_required(login_url='login')
+def profile(request):
+    reports = Report.objects.all()
+    users = User.objects.all()
+    return render_to_response(
+        'profile.html',
+        {'users':users, 'reports':reports},
+        context_instance=RequestContext(request)
+        )
+
+@login_required(login_url='login')
+def map(request):
+    reports = Report.objects.all()
+    users = User.objects.all()
+    return render_to_response(
+        'map.html',
+        {'reports': reports},
+        context_instance=RequestContext(request)
+    )
+
 
 def myGroups(request):
     groups = Group2.objects.all()

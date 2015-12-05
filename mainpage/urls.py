@@ -8,4 +8,6 @@ urlpatterns = [
     url(r'^myGroups/$', views.myGroups, name='myGroups'),
     url(r'^publicReports/$', views.publicReports, name='publicReports'),
     url(r'^logout/$', views.logout_view, name='logout'),
+    url(r'^profile/map/$', views.map, name='map'),
+    url(r'^profile/$', views.profile, name='profile'),
 ]

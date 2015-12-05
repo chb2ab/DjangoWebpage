@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.5/darkly/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.5/flatly/bootstrap.min.css" crossorigin="anonymous">
   </head>
 
 <body>
@@ -24,10 +24,10 @@
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="/mainpage">Home</a></li>
-        <li ><a href="/mainpage/myReports">My Reports</a></li>
-        <li><a href="/mainpage/publicReports">Public Reports</a></li>
-        <li class="active"><a href="/mainpage/myGroups">My Groups<span class="sr-only">(current)</span> </a> </li>
+        <li><a href="/siteadmin">Home</a></li>
+        <li ><a href="/siteadmin/users">User List</a></li>
+        <li><a href="/siteadmin/admins">Admins</a></li>
+        <li class="active"><a href="/siteadmin/groups">Groups<span class="sr-only">(current)</span> </a> </li>
 
         <li><a href="#">Messages</a><li>
         <li><a href="#">Download our app</a><li>
@@ -44,8 +44,7 @@
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <div class="container">
-<h1> My groups </h1>
-{% if request.user.is_active %}
+<h1> User Groups </h1>
 <h4> Any user can be added to a group by you </h4>
 
 <form action="/uploader/addgroup">
@@ -58,27 +57,16 @@
 
    <ul>
      {% for group in groups %}
-     {% if user.username = group.creator or user in group.permissions.all %}
      <div class="row">
       <div class="col-lg-8">
         <div class="bs-component">
           <div class="panel panel-primary">
            <div class="panel-heading"> 
          <a href='/uploader/{{group.name}}' >{{ group.name }} </a>
+      
         &nbsp;
         &nbsp;
-        <form class="form-horizontal" action="{% url "editreport" %}" method="post" enctype="multipart/form-data" style="display: inline;">
-        {% csrf_token %}
-        <input type="hidden" name="idofreport" value="{{ report.id }}">
-        <input class="btn btn-warning btn-sm" type="submit" value="Edit"> 
-        </form>
-        &nbsp;
-        &nbsp;
-        <form action="{% url "deletereport" %}" method="post" enctype="multipart/form-data" style="display: inline;">
-        {% csrf_token %}
-        <input type="hidden" name="idofreport" value="{{ report.id }}">
-        <input class="btn btn-danger btn-sm" type="submit" value="Delete"> 
-        </form>
+        
       </div>
       <div class="panel-body">
         Users:
@@ -90,7 +78,7 @@
         <br />
         Reports:
         {% for report in group.reports.all %}
-          <ul> Short Description: {{ report.sd }}</ul>
+          <ul> Name: {{ report.name }}</ul>
 
         {% endfor %}
         </br >
@@ -99,7 +87,6 @@
   </div>
 </div>
 </div>
-{% endif %}
         
      {% endfor %}
 
@@ -109,10 +96,6 @@
    <p> No groups available. </p>
 
 {% endif %}
-{% else %}
-<h4> Suspended accounts cannot view groups </h4>
-{% endif %}
-
 <p class="bs-component">
 <a href="/mainpage" class="btn btn-info"> Go back to main page </a>
 </p>

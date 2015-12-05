@@ -9,11 +9,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 import pdb;
+from django.http import HttpRequest
 
 from uploader.models import Document, Report, Folder, Group2
 from uploader.forms import DocumentForm, reportEditForm, folderEditForm, groupEditForm
+from siteadmin.models import admin
 
-
+@login_required(login_url='login')
 def userlist(request):
 	users = User.objects.all()
 	return render_to_response(
@@ -58,6 +60,7 @@ def publicList(request):
 		context_instance=RequestContext(request)
 	)
 
+@login_required(login_url='login')
 def groupuserlist(request, groupName):
 	groups = Group2.objects.all()
 	users = User.objects.all()
@@ -68,6 +71,8 @@ def groupuserlist(request, groupName):
 		context_instance=RequestContext(request)
 		)
 
+
+@login_required(login_url='login')
 def addgroupmember(request, userName, groupName):
 	groups = Group2.objects.all()
 	users = User.objects.all()
@@ -87,6 +92,7 @@ def addgroupmember(request, userName, groupName):
 
 def addgroupreport(request, groupName):
 	body = Report(user=request.user)
+	users = User.objects.all()
 	groups = Group2.objects.all()
 	form = reportEditForm(request.POST, instance=body)
 	if form.is_valid():
@@ -103,7 +109,7 @@ def addgroupreport(request, groupName):
 
 				return render_to_response(
 				'addgroupreport.html',
-				{'form': form, 'group': group},
+				{'form': form, 'group': group, 'users': users},
 				context_instance=RequestContext(request)
 				)
 
@@ -172,19 +178,22 @@ def deletedocument(request):
 
 def grouptest(request, group2_name):
 	groups = Group2.objects.all()
+	users = User.objects.all()
 	a = False
 	for group in groups:
 		if (group.name == group2_name):
 			a = True
+			if request.user.is_staff:
+				return render(request, 'uploader/grouptest.html', {'group':group})
 			if group.creator == request.user.username:
 				return render(request, 'uploader/grouptest.html', {'group':group})
 				#return HttpResponse("You're looking at group %s. " % group2_name)
 			for user in group.permissions.all():
 				if user.username == request.user.username:
-					return HttpResponse("You're looking at group %s. " % group2_name)
+					return render(request, 'uploader/grouptest.html', {'group':group})
 
 	if (a):
-		return HttpResponse("You do not have the access to view this group")
+		return HttpResponse("You do not have the access to view this: asldkjfalkdjf")
 	return HttpResponse("Unfortunately, this group does not exist yet")
 
 @login_required(login_url='login')

