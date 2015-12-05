@@ -1,15 +1,29 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404
 import pdb;
+from django.http import HttpRequest
 
-from uploader.models import Document, Report, Folder
-from uploader.forms import DocumentForm, reportEditForm, folderEditForm
+from uploader.models import Document, Report, Folder, Group2
+from uploader.forms import DocumentForm, reportEditForm, folderEditForm, groupEditForm
+from siteadmin.models import admin
+
+@login_required(login_url='login')
+def userlist(request):
+	users = User.objects.all()
+	return render_to_response(
+		'userlist.html',
+		{'users': users},
+		context_instance=RequestContext(request)
+		)
+
 
 @login_required(login_url='login')
 def list(request):
@@ -26,6 +40,14 @@ def list(request):
 		context_instance=RequestContext(request)
 	)
 
+def groupList(request):
+	groups = Group2.objects.all()
+	return render_to_response(
+		'myGroups.html',
+		{'groups': groups},
+		context_instance=RequestContext(request)
+		)
+
 @login_required(login_url='login')
 def publicList(request):
 	form = DocumentForm()
@@ -37,6 +59,61 @@ def publicList(request):
 		{'reports': reports, 'documents': documents, 'form': form},
 		context_instance=RequestContext(request)
 	)
+
+@login_required(login_url='login')
+def groupuserlist(request, groupName):
+	groups = Group2.objects.all()
+	users = User.objects.all()
+
+	return render_to_response(
+		'addgroupmember.html',
+		{'groups':groups, 'users':users, 'group':groupName},
+		context_instance=RequestContext(request)
+		)
+
+
+@login_required(login_url='login')
+def addgroupmember(request, userName, groupName):
+	groups = Group2.objects.all()
+	users = User.objects.all()
+	#NOTE : For some reason, group name and user name are switched
+	# I will figure out this problem later::::
+	for group in groups:
+		if group.name == userName:
+			for user in users:
+				if user.username == groupName:
+					group.permissions.add(user)
+	#return HttpResponseRedirect('uploader/' + groupName)				
+	return render_to_response(
+		'addnewgroupmember.html',
+		{'useradded': groupName, 'group':userName},
+		context_instance=RequestContext(request)
+		)
+
+def addgroupreport(request, groupName):
+	body = Report(user=request.user)
+	users = User.objects.all()
+	groups = Group2.objects.all()
+	form = reportEditForm(request.POST, instance=body)
+	if form.is_valid():
+		form.save()
+		for group in groups:
+			if group.name == groupName:
+				group.reports.add(body)
+		return HttpResponseRedirect('/uploader/' + groupName)
+	else:
+		form = reportEditForm(instance=body)
+		form.fields['folder'].queryset = Folder.objects.filter(user=request.user)
+		for group in groups:
+			if group.name == groupName:
+
+				return render_to_response(
+				'addgroupreport.html',
+				{'form': form, 'group': group, 'users': users},
+				context_instance=RequestContext(request)
+				)
+
+
 
 @login_required(login_url='login')
 def addreport(request):
@@ -100,6 +177,26 @@ def deletedocument(request):
 	Document.objects.get(pk=docid).delete()
 	return editreport(request)
 
+def grouptest(request, group2_name):
+	groups = Group2.objects.all()
+	users = User.objects.all()
+	a = False
+	for group in groups:
+		if (group.name == group2_name):
+			a = True
+			if request.user.is_staff:
+				return render(request, 'uploader/grouptest.html', {'group':group})
+			if group.creator == request.user.username:
+				return render(request, 'uploader/grouptest.html', {'group':group})
+				#return HttpResponse("You're looking at group %s. " % group2_name)
+			for user in group.permissions.all():
+				if user.username == request.user.username:
+					return render(request, 'uploader/grouptest.html', {'group':group})
+
+	if (a):
+		return HttpResponse("You do not have the access to view this: asldkjfalkdjf")
+	return HttpResponse("Unfortunately, this group does not exist yet")
+
 @login_required(login_url='login')
 def uploaddocument(request):
 	# Handle file upload
@@ -145,3 +242,18 @@ def editfolder(request):
 		{'form': form, 'idoffolder': id},
 		context_instance=RequestContext(request)
 	)
+
+def addgroup(request):
+	body = Group2(creator=request.user)
+	form = groupEditForm(request.POST, instance=body)
+	if form.is_valid():
+		form.save()
+		return HttpResponseRedirect('/mainpage/myGroups')
+	else:
+		form = groupEditForm()
+		return render_to_response(
+		'addgroup.html',
+		{'form':form},
+		context_instance=RequestContext(request)
+		)
+

@@ -28,6 +28,8 @@
         <li class><a href="/mainpage">Home</a></li>
         <li><a href="/mainpage/myReports">My Reports</a></li>
         <li class="active"><a href="/mainpage/publicReports">Public Reports<span class="sr-only">(current)</span></a></li>
+        <li><a href="/mainpage/myGroups">My Groups</a></li>
+
         <li><a href="#">Messages</a><li>
         <li><a href="#">Download our app</a><li>
 
@@ -42,8 +44,18 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+
+{% if groups %}
+<div class="alert alert-dismissible alert-success">
+  <button type="button" class="close" data-dismiss="alert">&close;</button>
+  <strong>Well done!</strong> You successfully read <a href="#" class="alert-link">this important alert message</a>.
+</div>
+{% endif %}
+
 <div class="container">
 <h1> Public Reports </h1>
+{% if request.user.is_active %}
 <h4> These reports have been marked as public, and can be viewed by anyone on the site </h4>
 
 <p>
@@ -128,6 +140,8 @@
    <p> No public reports available. </p>
 
 {% endif %}
+{% endif %}
+<h4> Suspended accounts cannot view public reports </h4>
 <p class="bs-component">
 <a class="btn btn-info" href="/mainpage"> Go back to main page </a>
 </p>

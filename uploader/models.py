@@ -2,6 +2,7 @@
 from django.db import models
 from django.conf import settings
 from vote.managers import VotableManager
+from django.contrib.auth.models import User
 import django
 
 class Folder(models.Model):
@@ -16,6 +17,8 @@ class Report(models.Model):
 	user = models.CharField(max_length=100, default="")
 	sd = models.CharField(max_length=200)
 	ld = models.CharField(max_length=1000)
+	lat = models.FloatField(default=0)
+	lon = models.FloatField(default=0)
 	public = models.BooleanField(default=False)
 	folder = models.ForeignKey(Folder, null=True, default=None, blank=True)
 	votes = VotableManager()
@@ -27,5 +30,13 @@ class Document(models.Model):
 	name = models.CharField(max_length=100, null=True, default=None, blank=True)
 	encrypted = models.BooleanField(default=False)
 	docfile = models.FileField(upload_to='documents')
+	def __str__(self):
+		return str(self.docfile);
+
+class Group2(models.Model):
+	name = models.CharField(max_length=100)
+	creator = models.CharField(max_length=100, default="")
+	permissions = models.ManyToManyField(User)
+	reports = models.ManyToManyField(Report)
 	def __str__(self):
 		return str(self.name);

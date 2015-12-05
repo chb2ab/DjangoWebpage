@@ -41,6 +41,8 @@ INSTALLED_APPS = (
     'myapplication',
     'uploader',
     'vote',
+    'siteadmin',
+    
 )
 
 MIDDLEWARE_CLASSES = (
@@ -68,6 +70,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
+                'django.core.context_processors.request',
             ],
         },
     },
@@ -81,14 +84,12 @@ WSGI_APPLICATION = 'cs3240_f15_team14.wsgi.application'
 
 DATABASES = {
     'default': {
-
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'mydatabase',
         'USER': 'mydatabaseuser',
         'PASSWORD': 'mypassword',
-        'HOST': '127.0.0.1',
+        'HOST' : '127.0.0.1',
         'PORT': '5432',
-
     }
 }
 
