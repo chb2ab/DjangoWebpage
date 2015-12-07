@@ -11,10 +11,6 @@ def decrypt_file(lines, key, name):
 		enc_text = line.encode('latin-1');
 		text = dec.decrypt(enc_text);
 		fw.write(text);
-	print("#######################")
-	print("Decryption Sucessful: File saved to downloads/" + name)
-	print("#######################")
-	print()
 	return True;
 
 if __name__ == "__main__":

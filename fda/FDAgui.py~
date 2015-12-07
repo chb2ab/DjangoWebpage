@@ -1,0 +1,229 @@
+# for Python3
+from tkinter import *
+from tkinter import messagebox
+import tkinter.simpledialog as simpledialog
+
+import psycopg2
+import urllib.request
+import json
+import requests
+
+from helpers import showAllTables, showAllDocs, showAllReports, showAllUsers
+from decrypt import decrypt_file
+from FDA import getPublicReports, getDocs, save_file
+from functools import partial
+
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import ARC4
+import json
+
+class Viewer:
+	def __init__(self):
+		self.root = Tk()
+		self.root.wm_geometry(u'10x10+0+0')
+		self.root.geometry('{}x{}'.format(500, 500))
+		self.root.protocol("WM_DELETE_WINDOW", self.root.destroy)
+		self.root.configure(background = 'white smoke')
+		## Canvas
+		self.cnv = Canvas(self.root)
+		self.cnv.grid(row=0, column=0, sticky='nswe')
+		## Scrollbars for canvas
+		vScroll = Scrollbar(self.root, orient=VERTICAL, command=self.cnv.yview)
+		vScroll.grid(row=0, column=1, sticky='ns')
+		self.cnv.configure(yscrollcommand=vScroll.set)
+	## Setup frames ##
+		#login
+		self.loginframe = Frame(self.cnv)
+		self.title = Label(self.loginframe,text="Login")
+		self.unlabel = Label(self.loginframe,text="Username")
+		self.unentry = Entry(self.loginframe)
+		self.unentry.focus_set()
+		self.pwlabel = Label(self.loginframe,text="Password")
+		self.pwentry = Entry(self.loginframe)
+		self.loginbutton = Button(self.loginframe,text='Login',command=self.login)
+	
+		self.title.pack(side='top')
+		self.unlabel.pack(side='left')
+		self.unentry.pack(side='left')
+		self.pwlabel.pack(side='left')
+		self.pwentry.pack(side='left')
+		self.loginbutton.pack(side='right')
+		
+		#main menu
+		self.mainframe = Frame(self.cnv)
+		self.logout = Button(self.mainframe,text='Logout',command=self.logout)
+		self.encrypt = Button(self.mainframe,text='Encrypt File',command=self.showencrypt)
+		self.showreports = Button(self.mainframe,text='Show Reports',command=self.reportsPage)
+		self.maintitle = Label(self.mainframe,text="Main Menu")
+	
+		self.maintitle.pack(side='top')
+		self.logout.pack(side='left')
+		self.encrypt.pack(side='left')
+		self.showreports.pack(side='left')
+		
+		#list of reports
+		self.reportsframe = Frame(self.cnv)
+		
+		#list of documents
+		self.docsframe = Frame(self.cnv)
+		
+		#encrypt document
+		self.encrframe = Frame(self.cnv)
+		self.encrtitle = Label(self.encrframe,text="Encryption")
+		self.fnlabel = Label(self.encrframe,text="File to encrypt:")
+		self.fnentry = Entry(self.encrframe)
+		self.keylabel = Label(self.encrframe,text="Encryption key:")
+		self.keyentry = Entry(self.encrframe)
+		self.okencrypt = Button(self.encrframe,text='Encrypt',command=self.encrypt_file)
+		
+		self.encrtitle.grid(row=0)
+		self.fnlabel.grid(row=1, column = 0)
+		self.fnentry.grid(row=1, column = 1)
+		self.keylabel.grid(row=2, column = 0)
+		self.keyentry.grid(row=2, column = 1)
+		self.okencrypt.grid(row=3)
+	##################
+		
+	def showlogin(self):
+		self.root.bind("<Return>", self.login)
+		self.loginframe.pack()
+		self.root.mainloop()
+
+	def login(self, *args):
+		self.encrframe.pack_forget()
+		self.mainframe.pack_forget()
+		self.reportsframe.pack_forget()
+		self.docsframe.pack_forget()
+		
+		self.user = self.unentry.get()
+		password = self.pwentry.get()
+		
+		URL = "http://fierce-scrubland-6270.herokuapp.com/myapplication/login/"
+		session = requests.Session()
+		session.get(URL)
+		csrftoken = session.cookies['csrftoken']
+
+		payload = {'username':self.user, 'password':password, 'next':'/myapplication/validate', 'csrfmiddlewaretoken':csrftoken}
+		response = session.post(URL, data=payload)
+
+		if (response.text == "True\n"):
+			self.loginframe.pack_forget()
+			self.mainpage()
+		else:
+			messagebox.showinfo("Login Failed", "Login Failed")
+			self.showlogin()
+
+	def logout(self):
+		self.encrframe.pack_forget()
+		self.mainframe.pack_forget()
+		self.reportsframe.pack_forget()
+		self.docsframe.pack_forget()
+		URL = "http://fierce-scrubland-6270.herokuapp.com/mainpage/logout/"
+		session = requests.Session()
+		session.get(URL)
+		csrftoken = session.cookies['csrftoken']
+	
+		payload = {'csrfmiddlewaretoken':csrftoken}
+		response = session.post(URL, data=payload)
+		self.loginframe.pack()
+
+	def downloadFile(self, doc):
+		url = 'https://fierce-scrubland-6270.herokuapp.com/media/' + doc[1]
+		response = urllib.request.urlopen(url)
+		data = response.read()
+		text = data.decode('latin-1')
+		success = False
+		if ( doc[3] == True ):
+			inp = simpledialog.askstring("This document is encrpyted, enter decryption key","Key: ")
+			key = inp.encode();
+			lines = json.loads(text);
+			success = decrypt_file(lines, key, doc[4]) # NAME: doc[1])
+		else:
+			success = save_file(data, doc[4]) # NAME:doc[1])
+		if (success):
+			messagebox.showinfo("Download Successful", "Download Sucessful: File saved to downloads/" + doc[4])
+		else:
+			messagebox.showinfo("Download Unsuccesful", "Download Unsuccesful")
+			
+	def docsPage(self, report):
+		self.encrframe.pack_forget()
+		self.docsframe.pack_forget()
+		self.docsframe.destroy()
+		self.docsframe = Frame(self.cnv, borderwidth=2, bg="blue")
+		
+		
+		docs = getDocs( report )
+		row = 0
+		self.docpgtitle = Label(self.docsframe,text="Documents for " + report[5])
+		self.docpgtitle.grid(row=row)
+		row += 1
+		for doc in docs:
+			doctitle = Label(self.docsframe,text="Title: " + doc[4])
+			docdownload = Button(self.docsframe,text='Download',command = partial(self.downloadFile, doc))
+			
+			doctitle.grid(row=row, column = 0)
+			docdownload.grid(row=row, column = 1)
+			row += 1
+				
+		self.docsframe.pack()
+		
+	def reportsPage(self):
+		self.encrframe.pack_forget()
+		self.reportsframe.pack_forget()
+		self.reportsframe.destroy()
+		self.reportsframe = Frame(self.cnv, borderwidth=4, bg="lightblue")
+		
+		reports = getPublicReports()
+		row = 0
+		for report in reports:
+			reptitle = Label(self.reportsframe,text="Report Title: " + report[5])
+			repdate = Label(self.reportsframe,text="Date: " + report[1].strftime('%m/%d/%Y'))
+			repsd = Label(self.reportsframe,text="Report Short Description: " + report[2])
+			repowner = Label(self.reportsframe,text="Owner: " + report[7])
+			reportaccess = Button(self.reportsframe,text='Show Docs',command = partial(self.docsPage, report))
+			
+			reptitle.grid(row=row)
+			row += 1
+			repdate.grid(row=row)
+			row += 1
+			repsd.grid(row=row)
+			row += 1
+			repowner.grid(row=row)
+			row += 1
+			reportaccess.grid(row=row)
+			row += 1
+		self.reportsframe.pack()
+
+	def showencrypt(self):
+		self.reportsframe.pack_forget()
+		self.docsframe.pack_forget()
+		self.encrframe.pack()
+		
+	def encrypt_file(self):
+		file_name = self.fnentry.get()
+		inp = self.keyentry.get()
+		key = inp.encode();
+	
+		splitted = file_name.split('/')
+		docname = splitted[len(splitted)-1]
+	
+		enc = ARC4.new(key)
+		try:
+			fr = open(file_name, 'rb');
+			fw = open("encoded/" + docname + ".enc", 'w');
+		except FileNotFoundError:
+			messagebox.showinfo("Encryption Unsucessful", "Encryption Unsucessful")
+		lines = [];
+		for line in fr:
+			text = enc.encrypt(line);
+			lines.append( text.decode('latin-1') );
+		json.dump(lines, fw);
+		messagebox.showinfo("Encryption Sucessful", "File saved to encoded/" + docname + ".enc")
+		
+	def mainpage(self):
+		self.mainframe.pack()
+		
+
+if __name__ == "__main__":
+	view = Viewer()
+	view.showlogin()
