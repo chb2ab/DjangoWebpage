@@ -41,6 +41,8 @@ INSTALLED_APPS = (
     'myapplication',
     'uploader',
     'siteadmin',
+    'vote',
+
     
 
 )
