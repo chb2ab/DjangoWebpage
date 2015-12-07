@@ -24,16 +24,9 @@ class Viewer:
 		self.root.geometry('{}x{}'.format(700, 500))
 		self.root.protocol("WM_DELETE_WINDOW", self.root.destroy)
 		self.root.configure(background = 'white smoke')
-		## Canvas
-		self.cnv = Canvas(self.root)
-		self.cnv.grid(row=0, column=0, sticky='nswe')
-		## Scrollbars for canvas
-		vScroll = Scrollbar(self.root, orient=VERTICAL, command=self.cnv.yview)
-		vScroll.grid(row=0, column=1, sticky='ns')
-		self.cnv.configure(yscrollcommand=vScroll.set)
 	## Setup frames ##
 		#login
-		self.loginframe = Frame(self.cnv)
+		self.loginframe = Frame(self.root)
 		self.title = Label(self.loginframe,text="Login")
 		self.unlabel = Label(self.loginframe,text="Username")
 		self.unentry = Entry(self.loginframe)
@@ -50,7 +43,7 @@ class Viewer:
 		self.loginbutton.pack(side='right')
 		
 		#main menu
-		self.mainframe = Frame(self.cnv)
+		self.mainframe = Frame(self.root)
 		self.logout = Button(self.mainframe,text='Logout',command=self.logout)
 		self.encrypt = Button(self.mainframe,text='Encrypt File',command=self.showencrypt)
 		self.showreports = Button(self.mainframe,text='Show Reports',command=self.reportsPage)
@@ -62,13 +55,19 @@ class Viewer:
 		self.showreports.pack(side='left')
 		
 		#list of reports
+		self.rfsframe = Frame(self.root)
+		self.cnv = Canvas(self.rfsframe)
+		vScroll = Scrollbar(self.rfsframe, orient=VERTICAL, command=self.cnv.yview)
+		vScroll.pack(side='right', fill="y")
+		self.cnv.pack()
+		self.cnv.configure(yscrollcommand=vScroll.set)
 		self.reportsframe = Frame(self.cnv)
 		
 		#list of documents
-		self.docsframe = Frame(self.cnv)
+		self.docsframe = Frame(self.root)
 		
 		#encrypt document
-		self.encrframe = Frame(self.cnv)
+		self.encrframe = Frame(self.root)
 		self.encrtitle = Label(self.encrframe,text="Encryption")
 		self.fnlabel = Label(self.encrframe,text="File to encrypt:")
 		self.fnentry = Entry(self.encrframe)
@@ -93,6 +92,7 @@ class Viewer:
 		self.encrframe.pack_forget()
 		self.mainframe.pack_forget()
 		self.reportsframe.pack_forget()
+		self.rfsframe.pack_forget()
 		self.docsframe.pack_forget()
 		
 		self.user = self.unentry.get()
@@ -117,6 +117,7 @@ class Viewer:
 		self.encrframe.pack_forget()
 		self.mainframe.pack_forget()
 		self.reportsframe.pack_forget()
+		self.rfsframe.pack_forget()
 		self.docsframe.pack_forget()
 		URL = "http://fierce-scrubland-6270.herokuapp.com/mainpage/logout/"
 		session = requests.Session()
@@ -149,7 +150,7 @@ class Viewer:
 		self.encrframe.pack_forget()
 		self.docsframe.pack_forget()
 		self.docsframe.destroy()
-		self.docsframe = Frame(self.cnv, borderwidth=2, bg="blue")
+		self.docsframe = Frame(self.root, borderwidth=2, bg="blue")
 		
 		
 		docs = getDocs( report )
@@ -170,8 +171,10 @@ class Viewer:
 	def reportsPage(self):
 		self.encrframe.pack_forget()
 		self.reportsframe.pack_forget()
+		self.rfsframe.pack()
 		self.reportsframe.destroy()
-		self.reportsframe = Frame(self.cnv, borderwidth=4, bg="lightblue")
+		self.reportsframe = Frame(self.rfsframe, borderwidth=4, bg="lightblue")
+		self.cnv.create_window(0, 0, window=self.reportsframe, anchor='w')
 		
 		reports = getPublicReports()
 		row = 0
@@ -192,10 +195,10 @@ class Viewer:
 			row += 1
 			reportaccess.grid(row=row)
 			row += 1
-		self.reportsframe.pack()
 
 	def showencrypt(self):
 		self.reportsframe.pack_forget()
+		self.rfsframe.pack_forget()
 		self.docsframe.pack_forget()
 		self.encrframe.pack()
 		
