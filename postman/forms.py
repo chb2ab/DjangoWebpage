@@ -223,3 +223,15 @@ class FullReplyForm(BaseReplyForm):
 
     class Meta(BaseReplyForm.Meta):
         fields = (['recipients'] if allow_copies else []) + ['subject', 'body']
+
+from django import forms
+from postman.models import EncryptModel,DecryptModel
+class EncryptForm(forms.ModelForm):
+    class Meta:
+        model = EncryptModel
+        fields = ('msg' , )
+
+class DecryptForm(forms.ModelForm):
+    class Meta:
+        model = DecryptModel
+        fields = ('msg' , 'key', )

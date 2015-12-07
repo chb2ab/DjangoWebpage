@@ -8,7 +8,7 @@ except ImportError:
     from django.contrib.sites.models import get_current_site
 from django.utils.translation import ugettext, ugettext_lazy as _
 
-from postman.models import Message, PendingMessage
+from postman.models import Message, PendingMessage, EncryptModel, DecryptModel
 
 
 class MessageAdminForm(forms.ModelForm):
@@ -195,3 +195,5 @@ class PendingMessageAdmin(MessageAdmin):
 
 admin.site.register(Message, MessageAdmin)
 admin.site.register(PendingMessage, PendingMessageAdmin)
+admin.site.register(EncryptModel)
+admin.site.register(DecryptModel)

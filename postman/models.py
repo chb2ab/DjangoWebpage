@@ -564,3 +564,18 @@ class PendingMessage(Message):
     def set_rejected(self):
         """Set the message as rejected."""
         self.moderation_status = STATUS_REJECTED
+
+class EncryptModel(models.Model):
+    msg = models.CharField(max_length=1000,default='SOME STRING')
+    key = models.CharField(max_length=1000,default='SOME STRING')
+    test = models.CharField(max_length=100,default='SOME STRING')
+    def __str__(self):
+        return self.msg;
+    
+class DecryptModel(models.Model):
+    msg = models.CharField(max_length=1000,default=b'SOME STRING')
+    key = models.CharField(max_length=1000,default=b'SOME STRING')
+    def __str__(self):
+        return self.msg;
+    
+ 
