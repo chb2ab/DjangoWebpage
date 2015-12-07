@@ -8,7 +8,9 @@
     <input type="submit" name="Submit">
 </form>
 {% if enc %}
-        Encoded Message: <input type="text" name="FirstName" value="{{enc_msg}}"><br>
+        Encrypted Message: <input type="text" name="FirstName" value="{{enc_msg}}"><br>
         Key: <input type="text" name="Key" value="{{key}}"><br>
 {% endif %}
+
+<a href="{% url 'postman:write' %}"> Copy the encrypted message and send it here </a>
 </html>
