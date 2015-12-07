@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+  	{% load postman_tags %}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,7 +33,7 @@
         <li><a href="/mainpage/myReports">My Reports</a></li>
         <li><a href="/mainpage/publicReports">Public Reports</a></li>
         <li><a href="/mainpage/myGroups">My Groups </a> </li>
-        <li><a href="/messages/">Messages</a><li>
+        <li><a href="/messages/">Messages{% postman_unread as unread_count %} {% if unread_count %} <span class="badge">{{ unread_count }}{% endif %} </span></a><li>
         <li><a href="/mainpage/profile">User profile </a></li>
        	{% if request.user.is_staff %}
        	<li><a class="btn btn-md btn-primary" href="/siteadmin/"> Site Admin </a></li>
@@ -106,8 +107,13 @@
 			<h4>Messaging System</h4>
 		</div>
 		<div class="panel-body">
-			This feature will be coming soon!
-		</div>
+		<p>
+			Our user-to-user private messaging system allows for communication between reporters. To send messages, first encrypt what you want to send, and keep the randomly generated key to yourself. Outside of the site, communicate the key to whomever you sent the message to, and they can decrypt the message on our site using that key.
+		</br>
+	</br>
+			<a href="/messages/" class="btn btn-success"> Go to Messages </a>
+		</p>	
+			</div>
 		</div>
 	</div>
 </div>
@@ -120,8 +126,15 @@
 			<h4>Stand-alone Application</h4>
 		</div>
 		<div class="panel-body">
-			<p> This feature will be coming soon!
+			<p> Our stand-alone application allows you to view and download your reports in a GUI application. We have a link to download our zipped application here.
+
 			</p>
+
+			<a href="https://www.dropbox.com/s/7is3jph4xzupp5b/FileDownloadApplication.zip?dl=0" class="btn btn-success"> Download our Application</a>
+
+		</br>
+	</br>
+
 			
 		</div>
 		</div>
