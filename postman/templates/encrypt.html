@@ -1,0 +1,14 @@
+
+<!DOCTYPE html>
+<html>
+<form id = "enc_form" action="/messages/encrypt/" enctype="multipart/form-data" method="post">
+	{% csrf_token %}
+    <label for="msg">Your message: </label>
+    <textarea cols="40" rows="5" name = "msg"  value="{{ message }}"></textarea>
+    <input type="submit" name="Submit">
+</form>
+{% if enc %}
+        Encoded Message: <input type="text" name="FirstName" value="{{enc_msg}}"><br>
+        Key: <input type="text" name="Key" value="{{key}}"><br>
+{% endif %}
+</html>

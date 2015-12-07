@@ -17,11 +17,13 @@
 
 <body>
 
-
 {% block postman_menu %}
 {% endblock %}
+<pre>
+<a href="{% url 'postman:encrypt' %}"> Encrypt Your Message </a>
+<a href="{% url 'postman:decrypt' %}"> Decrypt Your Message </a>
 
-
+</pre>
  <!--<li><a href="{% url 'postman:inbox' %}">"Inbox" </a></li>
  <li><a href="{% url 'postman:sent' %}">"Sent Messages"</a></li>
  <li><a href="{% url 'postman:write' %}">"Write"</a></li>

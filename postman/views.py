@@ -440,3 +440,56 @@ class UndeleteView(UpdateMessageMixin, View):
     """Revert messages/conversations from marked as deleted."""
     field_bit = 'deleted_at'
     success_msg = ugettext_lazy("Messages or conversations successfully recovered.")
+
+
+
+#encrypt added
+from Crypto.Cipher import AES
+import binascii
+from Crypto.PublicKey import RSA
+from Crypto import Random
+from Crypto.Hash import SHA256
+
+def secret_string(word,key):
+    public_key = key.publickey()
+    enc_data = public_key.encrypt(str.encode(word), 32)
+    return enc_data
+
+
+from django.template import RequestContext
+
+from django.shortcuts import render
+from django.shortcuts import render_to_response
+from postman.forms import EncryptForm,DecryptForm
+def encrypt(request):
+    context = RequestContext(request)
+    enc = False
+    if request.method == 'POST':
+        enc_form = EncryptForm(request.POST,request.FILES)
+        if enc_form.is_valid():
+            key = RSA.generate(1024)
+            inputmsg = enc_form.cleaned_data['msg']
+            msg = secret_string(inputmsg,key)
+            enc = True
+            return render_to_response('encrypt.html',{'enc_msg': msg, 'enc': enc, 'key':key.exportKey()},context)
+    return render(request,'encrypt.html')
+
+def decrypt(request):
+    context = RequestContext(request)
+    dec = False
+    msg = ''
+    if request.method == 'POST':
+        dec_form = DecryptForm(request.POST,request.FILES)
+        if dec_form.is_valid():
+            inputkeystr = 'b\'' + dec_form.cleaned_data['key'] +'\''
+            #inputkeystr = "b'" + inputkeystr + "'"
+            inputkeystr = inputkeystr[:(inputkeystr.index("-----BEGIN RSA PRIVATE KEY-----")+ len("-----BEGIN RSA PRIVATE KEY-----"))] + "\\n" + inputkeystr[(inputkeystr.index("-----BEGIN RSA PRIVATE KEY-----")+ len("-----BEGIN RSA PRIVATE KEY-----")):]
+            inputkeystr = inputkeystr[:(inputkeystr.index("-----END RSA PRIVATE KEY-----"))] + "\\n" + inputkeystr[(inputkeystr.index("-----END RSA PRIVATE KEY-----")):]
+            inputkey = eval(inputkeystr)
+            ciphertextstr = dec_form.cleaned_data['msg']
+            ciphertextstr.replace('\\','\\\\')
+            ciphertext = eval(ciphertextstr)
+            pubkey = RSA.importKey(inputkey)
+            msg = pubkey.decrypt(ciphertext).decode()
+            dec = True
+    return render_to_response('decrypt.html',{'dec_msg': msg, 'dec': dec},context)
