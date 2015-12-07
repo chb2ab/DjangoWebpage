@@ -2,11 +2,16 @@
 from django.db import models
 from django.conf import settings
 <<<<<<< HEAD
+<<<<<<< HEAD
 from vote.managers import VotableManager
 =======
 from django.contrib.auth.models import User
 
 >>>>>>> testingThings
+=======
+from django.contrib.auth.models import User
+
+>>>>>>> messenger2
 import django
 
 class Folder(models.Model):
@@ -33,7 +38,11 @@ class Document(models.Model):
 	report = models.ForeignKey(Report, null=True)
 	name = models.CharField(max_length=100, null=True, default=None, blank=True)
 	encrypted = models.BooleanField(default=False)
+<<<<<<< HEAD
 	docfile = models.FileField(upload_to='documents')
+=======
+	docfile = models.FileField(upload_to='documents/')
+>>>>>>> messenger2
 	def __str__(self):
 <<<<<<< HEAD
 =======
@@ -45,5 +54,8 @@ class Group2(models.Model):
 	permissions = models.ManyToManyField(User)
 	reports = models.ManyToManyField(Report)
 	def __str__(self):
+<<<<<<< HEAD
 >>>>>>> testingThings
+=======
+>>>>>>> messenger2
 		return str(self.name);
