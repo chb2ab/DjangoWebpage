@@ -1,0 +1,15 @@
+
+<!DOCTYPE html>
+<html>
+<form id = "enc_form" action="/messages/decrypt/" enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    <label for="msg">Your message: </label>
+    <textarea cols="40" rows="5" name = "msg"  value="{{ message }}"></textarea>
+    <label for="key">Your key: </label>
+    <textarea cols="40" rows="5" name = "key"  value="{{ message }}"></textarea>
+    <input type="submit" name="Submit">
+</form>
+{% if dec %}
+        Decrypted Message: <input type="text" name="FirstName" value="{{dec_msg}}"><br>
+{% endif %}
+</html>

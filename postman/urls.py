@@ -95,6 +95,7 @@ except ImportError:
 from django.views.generic.base import RedirectView
 
 from . import OPTIONS
+from . import views
 from .views import (InboxView, SentView, ArchivesView, TrashView,
         WriteView, ReplyView, MessageView, ConversationView,
         ArchiveView, DeleteView, UndeleteView)
@@ -112,5 +113,7 @@ urlpatterns = patterns('',
     url(r'^archive/$', ArchiveView.as_view(), name='archive'),
     url(r'^delete/$', DeleteView.as_view(), name='delete'),
     url(r'^undelete/$', UndeleteView.as_view(), name='undelete'),
+    url(r'^encrypt/$', views.encrypt, name='encrypt'),
+    url(r'^decrypt/$', views.decrypt, name='decrypt'),
     (r'^$', RedirectView.as_view(url='inbox/', permanent=True)),
 )
