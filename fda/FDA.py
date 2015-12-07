@@ -13,188 +13,39 @@ from encrypt import encrypt_file
 
 # postgres://hvcaoxvgdsxzui:ZnOM8mecGoc3sNJZuI3rGoGwrU@ec2-107-21-222-62.compute-1.amazonaws.com:5432/d13c60av8agdom
 
+
+global conn
+conn = psycopg2.connect("postgres://hvcaoxvgdsxzui:ZnOM8mecGoc3sNJZuI3rGoGwrU@ec2-107-21-222-62.compute-1.amazonaws.com:5432/d13c60av8agdom")
+	
 def save_file( text, name ):
 	fw = open("downloads/"+name, 'wb');
 	fw.write(text);
 	return True;
-
-def downloadFile( doc ):
-	url = 'https://fierce-scrubland-6270.herokuapp.com/media/' + doc[1]
-	response = urllib.request.urlopen(url)
-	data = response.read()
-	text = data.decode('latin-1')
-	print( type( text ) )
-	success = False
-	if ( doc[3] == True ):
-		print("#######################")
-		print("This document is encrpyted, enter decryption key:" )
-		print("#######################")
-		inp = str( input(":") )
-		key = inp.encode();
-		lines = json.loads(text);
-		success = decrypt_file(lines, key, doc[4]) # NAME: doc[1])
-	else:
-		success = save_file(data, "downloaded") # NAME:doc[1])
-	if (success):
-		print("#######################")
-		print("Download Sucessful: File saved to downloads/" + doc[4])
-		print("#######################")
-		print()
 	
-def getShowDocs( report ):
+def getDocs( report ):
 	global conn
 	cur = conn.cursor()
 	cur.execute("SELECT * FROM uploader_document")
 	docs = cur.fetchall()
-	count = 0
 	documents = []
-	print( "Documents for " + report[5] )
 	for doc in docs:
 		if ( doc[2] == report[0] ):
 			documents.append(doc)
-			count += 1
-			print( str(count)+": "+doc[4] )
-	print()
 	return(documents)
 
-def docsPage( report ):
-	while True:
-		docs = getShowDocs( report )
-		print("#######################")
-		print("Enter number of document to download:" )
-		print("0 to Exit")
-		print("#######################")
-		inp = int( input(":") )
-		if inp == 0:
-			break
-		else:
-			inp -= 1;
-			if ( inp < 0 or inp >= len( docs ) ):
-				print("not a valid entry")
-				continue
-			else:
-				downloadFile( docs[inp] )
-
-def getShowPublicReports():
+def getPublicReports():
 	global conn
 	cur = conn.cursor()
 	cur.execute("SELECT * FROM uploader_report")
 	reports = cur.fetchall()
-	count = 0
 	publicReports = []
-	print()
-	print( "All Reports" )
 	for report in reports:
 		if( report[4] == True ):
 			publicReports.append(report)
-			count += 1
-			print( str(count)+":----------------------" )
-			print( "Report Title: " + report[5] )
-			print( "Date: " + report[1].strftime('%m/%d/%Y') )
-			print( "Report Short Description: " + report[2] )
-			print( "Owner: " + report[7] )
-	print()
 	return(publicReports)
-	
-def reportsPage():
-	while True:
-		reports = getShowPublicReports()
-		print("#######################")
-		print("Enter number of report to list its documents:" )
-		print("0 to Exit")
-		print("#######################")
-		inp = int( input(":") )
-		if inp == 0:
-			break
-		else:
-			inp -= 1;
-			if ( inp < 0 or inp >= len( reports ) ):
-				print("not a valid entry")
-				continue
-			else:
-				docsPage( reports[inp] )
-
-def login():
-	URL = "http://fierce-scrubland-6270.herokuapp.com/myapplication/login/"
-	session = requests.Session()
-	session.get(URL)
-	csrftoken = session.cookies['csrftoken']
-
-	print("#######################")
-	print("Login")
-	print("#######################")
-	user = str( input("Enter username: ") )
-	password = str( input("Enter password: ") )
-	print()
-
-	payload = {'username':user, 'password':password, 'next':'/myapplication/validate', 'csrfmiddlewaretoken':csrftoken}
-	response = session.post(URL, data=payload)
-
-	if (response.text == "True\n"):
-		return True
-	else:
-		return False
-
-def logout():
-	URL = "http://fierce-scrubland-6270.herokuapp.com/mainpage/logout/"
-	session = requests.Session()
-	session.get(URL)
-	csrftoken = session.cookies['csrftoken']
-
-	payload = {'csrfmiddlewaretoken':csrftoken}
-	response = session.post(URL, data=payload)
-	
-	print("#######################")
-	print("Logged out")
-	print("#######################")
-	print()
-
-def mainpage():
-	while True:
-		print("#######################")
-		print("Enter a number")
-		print("2 to encrypt a document")
-		print("1 to show all public reports")
-		print("0 to Logout")
-		print("#######################")
-		inp = int( input(":") )
-		if inp == 0:
-			logout()
-			break;
-		if inp == 1:
-			reportsPage()
-		if inp == 2:
-			encrypt_file()
-
 
 if __name__ == "__main__":
-	global conn
-	conn = psycopg2.connect("postgres://hvcaoxvgdsxzui:ZnOM8mecGoc3sNJZuI3rGoGwrU@ec2-107-21-222-62.compute-1.amazonaws.com:5432/d13c60av8agdom")
-	
-	while True:
-		print("#######################")
-		print("Enter a number")
-		print("1 to Login")
-		print("0 to Exit")
-		print("#######################")
-		inp = int( input(":") )
-		if inp == 0:
-			break;
-		if inp == 1:
-			success = login()
-			if (success):
-				print("#######################")
-				print("Login Successful")
-				print("#######################")
-				print()
-				mainpage()
-			else:
-				print("#######################")
-				print("Login Failed")
-				print("#######################")
-				print()
-
-
+	showAllDocs()
 
 
 

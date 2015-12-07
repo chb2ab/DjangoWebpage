@@ -107,7 +107,9 @@
 
             infowindow = new google.maps.InfoWindow({content: "holding..."});
             {% for report in reports %}
+            {% if request.user.username == report.user %}
             setMarkers{{report.name}}(map, locations);
+            {% endif %}
             {% endfor %}
           }
 
@@ -143,6 +145,7 @@
 
 ] // end javascript array
 {% for report in reports %}
+{% if request.user.username == report.user %}
 function setMarkers{{report.name}}(map, locations) {
   
     var {{report.name}} = new google.maps.LatLng({{report.lat}}, {{report.lon}});
@@ -177,16 +180,21 @@ function setMarkers{{report.name}}(map, locations) {
     });
 
     var contentString = "{{report.name}}";
-
+  
     google.maps.event.addListener(marker, 'click', function () {
-
+    if (map.getStreetView().getVisible()) {
+    infobox.open(map.getStreetView(), this);
+    } else {
     infobox.open(map,this);
     map.panTo({{report.name}})
+    }
+    
 
 });
     
 
   }
+  {% endif %}
 {% endfor %}
 
 

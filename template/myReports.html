@@ -80,7 +80,7 @@
         Report Title: {{ report.name }} 
         &nbsp;
         &nbsp;
-        {% if not request.user.is_active %}
+        {% if request.user.is_active %}
         <form class="form-horizontal" action="{% url "editreport" %}" method="post" enctype="multipart/form-data" style="display: inline;">
         {% csrf_token %}
         <input type="hidden" name="idofreport" value="{{ report.id }}">

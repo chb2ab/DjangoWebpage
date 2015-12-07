@@ -4,13 +4,8 @@ from Crypto.PublicKey import RSA
 from Crypto.Cipher import ARC4
 import json
 
-def encrypt_file():
+def encrypt_file(file_name, inp):
 	""" encrypt a given file to a .enc file using the given key """
-	print("#######################")
-	print("Encrypt File")
-	print("#######################")
-	file_name = str( input("Enter filename: ") )
-	inp = str( input("Enter a key: ") )
 	key = inp.encode();
 	
 	splitted = file_name.split('/')
