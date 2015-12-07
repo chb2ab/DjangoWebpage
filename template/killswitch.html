@@ -34,7 +34,7 @@
           <li><a href="/mainpage/myReports">My Reports</a></li>
           <li><a href="/mainpage/publicReports">Public Reports</a></li>
           <li><a href="/mainpage/myGroups">My Groups</a></li>
-          <li><a href="#">Messages</a></li>
+          <li><a href="/messages/">Messages{% postman_unread as unread_count %} {% if unread_count %} <span class="badge">{{ unread_count }}{% endif %} </span></a><li>
           <li class="active"><a href="#">Profile<span class="sr-only">(current)</span></a></li>
           <li><a href="#">Download our app</a><li>
 
