@@ -3,6 +3,7 @@
 <html>
 
 <head>
+    {% load postman_tags %}
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
 
@@ -46,7 +47,7 @@
         <li><a href="/mainpage/publicReports">Public Reports</a></li>
         <li><a href="/mainpage/myGroups">My Groups</a></li>
 
-        <li class="active"><a href="/messages/">Messages<span class="sr-only">(current)</span></a><li>
+          <li><a href="/messages/">Messages{% postman_unread as unread_count %} {% if unread_count %} <span class="badge">{{ unread_count }}{% endif %} </span></a><li>
         <li><a href="/mainpage/profile">User profile </a></li>
         {% if request.user.is_staff %}
         <li><a class="btn btn-md btn-primary" href="/siteadmin/"> Site Admin </a></li>
