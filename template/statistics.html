@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.5/darkly/bootstrap.min.css" crossorigin="anonymous">
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+  <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/src/infobox.js"></script>
+
+
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['User', 'Reports'],
+          ['You',     {{personalReports}}],
+          ['Your Groups',      {{groupReports}}],
+          ['All Other Reports',  {{allReports}}],
+        ]);
+
+        var options = {
+          title: 'Report Information',
+          pieHole: 0.4,
+          backgroundColor:'#212121',
+          titleTextStyle:{
+            color:'#ffffff',
+          },
+          legendTextStyle:{
+            color:'#ffffff',
+          },
+
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+
+</head>
+
+<body onload="initialize()">
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">SecureWitness</a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li><a href="/mainpage">Home</a></li>
+          <li><a href="/mainpage/myReports">My Reports</a></li>
+          <li><a href="/mainpage/publicReports">Public Reports</a></li>
+          <li><a href="/mainpage/myGroups">My Groups</a></li>
+          <li><a href="#">Messages</a></li>
+          <li class="active"><a href="#">Profile<span class="sr-only">(current)</span></a></li>
+          <li><a href="#">Download our app</a><li>
+
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Github link</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <div class="container">
+      <h1> My profile </h1>
+
+
+     
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="/mainpage/profile">Overview <span class="sr-only">(current)</span></a></li>
+            <li><a href="/mainpage/myReports">Reports</a></li>
+            <li><a href="/mainpage/myGroups">Groups</a></li>
+            <li><a href="/mainpage/profile/statistics">Statistics</a></li>
+            <li><a href="/mainpage/profile/map">Map</a></li>
+            <li><a href="/mainpage/profile/killswitch">THE KILL SWITCH</a></li>
+          </ul>
+
+        </div>
+        <div class="col-md-5" id="piechart" style="width: 900px; height: 500px;"></div>
+
+</div>
+
+<div>
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+
+
+
+
+</body>
+
+</html>

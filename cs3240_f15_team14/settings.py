@@ -40,9 +40,11 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'myapplication',
     'uploader',
-    'vote',
     'siteadmin',
-    'postman',
+    'vote',
+
+    
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -84,12 +86,8 @@ WSGI_APPLICATION = 'cs3240_f15_team14.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'mydatabase',
-        'USER': 'mydatabaseuser',
-        'PASSWORD': 'mypassword',
-        'HOST' : '127.0.0.1',
-        'PORT': '5432',
     }
 }
 
@@ -107,10 +105,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-POSTMAN_AUTO_MODERATE_AS = True
-
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
@@ -118,11 +112,6 @@ EMAIL_PORT = 587
 STATIC_URL = '/static/'
 
 # Parse database configuration from $DATABASE_URL
-
-import dj_database_url
-
-DATABASES['default'] =  dj_database_url.config(default='postgres://hvcaoxvgdsxzui:ZnOM8mecGoc3sNJZuI3rGoGwrU@ec2-107-21-222-62.compute-1.amazonaws.com:5432/d13c60av8agdom')
-
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

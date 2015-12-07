@@ -142,7 +142,11 @@ def deletereport(request):
 	id = request.POST.get("idofreport", None);
 	Report.objects.get(pk=id).delete()
 	
-	return HttpResponseRedirect('/mainpage/myReports')
+	if request.user.is_active:
+		return HttpResponseRedirect('/siteadmin/users')
+	else:
+		return HttpResponseRedirect('/mainpage/myReports')
+
 
 
 @login_required(login_url='login')
@@ -177,6 +181,7 @@ def deletedocument(request):
 	Document.objects.get(pk=docid).delete()
 	return editreport(request)
 
+@login_required(login_url='login')
 def grouptest(request, group2_name):
 	groups = Group2.objects.all()
 	users = User.objects.all()
@@ -248,6 +253,8 @@ def addgroup(request):
 	form = groupEditForm(request.POST, instance=body)
 	if form.is_valid():
 		form.save()
+		if request.user.is_staff:
+			return HttpResponseRedirect('/siteadmin/groups')
 		return HttpResponseRedirect('/mainpage/myGroups')
 	else:
 		form = groupEditForm()

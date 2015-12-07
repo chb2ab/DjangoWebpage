@@ -143,6 +143,37 @@ def myGroups(request):
         context_instance=RequestContext(request)
         )
 
+def statistics(request):
+	reports = Report.objects.all()
+	query = get_query(request.user.username, ['user'])
+	personalReports = len(reports.filter(query))
+	groups = Group2.objects.all()
+	groupReports = 0
+	for group in groups:
+		if group.creator == request.user.username:
+			groupReports +=1
+		else:
+			if request.user in group.permissions.all():
+				groupReports+=1
+
+	allReports = len(reports)
+
+	allReports = allReports - groupReports - personalReports
+	return render_to_response(
+		'statistics.html',
+		{'personalReports':personalReports, 'groupReports':groupReports, 'allReports':allReports},
+		context_instance=RequestContext(request)
+		)
+
+@login_required(login_url='login')
+def killswitch(request):
+	users = User.objects.all()
+	return render_to_response('killswitch.html', 
+		{'users': users},
+		context_instance=RequestContext(request)
+		)
+
+
 @login_required(login_url='login')
 def logout_view(request):
 	logout(request);

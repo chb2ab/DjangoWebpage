@@ -22,6 +22,8 @@ def mainpage(request):
 
 	reports = Report.objects.all()
 
+	if not request.user.is_staff:
+		return HttpResponseRedirect('/mainpage/')
 	return render_to_response(
 		'siteadminmain.html',
 		{'reports': reports},
@@ -31,6 +33,8 @@ def mainpage(request):
 def userlist(request):
 	users = User.objects.all()
 	reports = Report.objects.all()
+	if not request.user.is_staff:
+		return HttpResponseRedirect('/mainpage/')
 	return render_to_response(
 		'users.html',
 		{'users': users, 'reports':reports},
@@ -42,6 +46,8 @@ def userinfo(request, user_name):
 	reports = Report.objects.all()
 	groups = Group2.objects.all()
 	documents = Document.objects.all()
+	if not request.user.is_staff:
+		return HttpResponseRedirect('/mainpage/')
 
 	for user in users:
 		if user.username == user_name:
@@ -52,6 +58,8 @@ def userinfo(request, user_name):
 
 def suspendaccount(request, user_name):
 	users = User.objects.all()
+	if not request.user.is_staff:
+		return HttpResponseRedirect('/mainpage/')
 	for user in users:
 		if user.username == user_name:
 			user.is_active = True
@@ -60,6 +68,8 @@ def suspendaccount(request, user_name):
 
 def unsuspendaccount(request, user_name):
 	users = User.objects.all()
+	if not request.user.is_staff:
+		return HttpResponseRedirect('/mainpage/')
 	for user in users:
 		if user.username == user_name:
 			user.is_active = False
@@ -68,6 +78,8 @@ def unsuspendaccount(request, user_name):
 
 def admins(request):
 	users = User.objects.all()
+	if not request.user.is_staff:
+		return HttpResponseRedirect('/mainpage/')
 	admins = admin.objects.all()
 	return render(request, 
 		'siteadmin/admins.html',
@@ -75,6 +87,8 @@ def admins(request):
 		)
 
 def groups(request):
+	if not request.user.is_staff:
+		return HttpResponseRedirect('/mainpage/')
 	groups = Group2.objects.all()
 	return render_to_response(
         'groups.html',
@@ -83,6 +97,8 @@ def groups(request):
         )
 
 def newadmin(request, user_name):
+	if not request.user.is_staff:
+		return HttpResponseRedirect('/mainpage/')
 	users = User.objects.all()
 	user_name_added = user_name
 	groups = Group2.objects.all()
@@ -94,5 +110,14 @@ def newadmin(request, user_name):
 		{'groups':groups, 'users':users}
 		)
 
+def groupvis(request):
+	groups = Group2.objects.all()
+	users = User.objects.all()
+
+	return render_to_response(
+		'visualization.html',
+		{'groups':groups, 'users':users},
+		context_instance=RequestContext(request)
+		)
 
 

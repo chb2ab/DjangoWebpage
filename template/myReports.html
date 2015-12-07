@@ -19,7 +19,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/">SecureWitness</a>
+      <a class="navbar-brand" href="/">SecureShare</a>
     </div>
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -29,8 +29,11 @@
         <li><a href="/mainpage/publicReports">Public Reports</a></li>
         <li><a href="/mainpage/myGroups">My Groups</a></li>
         <li><a href="#">Messages</a><li>
-        <li><a href="#">Download our app</a><li>
-
+        <li><a href="/mainpage/profile">User profile </a></li>
+        {% if request.user.is_staff %}
+        <li><a class="btn btn-md btn-primary" href="/siteadmin/"> Site Admin </a></li>
+        {% endif %}
+        <li><a href="/mainpage/logout">Logout</a><li>
       </ul>
      
       <ul class="nav navbar-nav navbar-right">
@@ -56,7 +59,7 @@
     <input class="btn btn-success btn-lg" type="submit" value="Create a report">
 
       </form>
-      
+      &nbsp;&nbsp;
     <form action="{% url "addfolder" %}" method="post"
     enctype="multipart/form-data" style="display: inline;">
     {% csrf_token %}
@@ -80,7 +83,7 @@
         Report Title: {{ report.name }} 
         &nbsp;
         &nbsp;
-        {% if not request.user.is_active %}
+        {% if request.user.is_active %}
         <form class="form-horizontal" action="{% url "editreport" %}" method="post" enctype="multipart/form-data" style="display: inline;">
         {% csrf_token %}
         <input type="hidden" name="idofreport" value="{{ report.id }}">
@@ -94,6 +97,21 @@
         <input type="hidden" name="idofreport" value="{{ report.id }}">
         <input class="btn btn-danger btn-sm" type="submit" value="Delete"> 
         </form>
+
+        {% if report.public %}
+        &nbsp;
+        &nbsp; &nbsp;
+        &nbsp; &nbsp;
+        &nbsp; &nbsp;
+        &nbsp;
+        <a style="margin-top: 20px;" href="https://twitter.com/share" class="twitter-share-button"{count} data-url="https://fierce-scrubland-6270.herokuapp.com/myapplication" data-text="Read my new report on {{report.sd}}" data-via="SecureShare" data-size="large">Tweet</a>
+        
+        <a class="tumblr-share-button" href="https://www.tumblr.com/share" data-content="Awesome report: {{report.ld}}"></a>
+        <script id="tumblr-js" async src="https://assets.tumblr.com/share-button.js"></script>
+   
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        {% endif %}
+
       </div>
       <div class="panel-body">
         
